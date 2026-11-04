@@ -74,32 +74,38 @@ td input,td select{margin:0;padding:6px 8px;font-size:14px}td input.q{width:80px
 .tot div.fin{background:var(--ok);color:var(--okt);font-weight:700;font-size:18px}
 .mu{color:var(--mu)}.pad{padding:10px}.row{display:flex;gap:8px;margin-top:12px}.cv{position:relative;height:280px}
 dialog{border:0;border-radius:14px;width:min(540px,94vw);background:var(--card);color:var(--tx);padding:18px}dialog::backdrop{background:rgba(0,0,0,.5)}
-@media(max-width:899px){.app{flex-direction:column}#nav{width:100%;position:sticky;top:calc(env(safe-area-inset-top,0px) + 50px);flex-direction:row;overflow-x:auto;background:var(--card);padding:8px;border-bottom:1px solid var(--bd);z-index:10}#nav button{white-space:nowrap}main{width:100%;padding:12px}.pos,.g2{grid-template-columns:1fr}}
+@media(max-width:899px){.app{flex-direction:column}#nav{width:100%;position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);flex-direction:row;overflow-x:auto;overscroll-behavior-x:contain;background:var(--card);padding:8px;border-bottom:1px solid var(--bd);z-index:10}#nav button{white-space:nowrap;min-height:40px}main{width:100%;padding:12px}.pos,.g2{grid-template-columns:minmax(0,1fr)}.row{flex-wrap:wrap}.tw{overscroll-behavior-x:contain}}
+@media(max-width:600px){header{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:6px;padding:8px 12px}header h1{grid-column:1/-1;font-size:16px}#storageStatus{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:10px}.hb{min-height:38px;padding:5px 7px;font-size:12px}#nav{top:calc(env(safe-area-inset-top,0px) + 84px)}main{padding:10px}.kp{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.k{min-width:0;padding:10px}.k b{font-size:clamp(16px,5vw,22px)}.card{padding:12px}}
+@media(max-width:380px){.fg[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:minmax(0,1fr)!important}.row>.btn{flex:1 1 120px}.list-count{margin-left:0}}
+.mobile-menu-toggle,.mobile-menu{display:none}
+@media(max-width:600px){#nav{display:none}.mobile-menu-toggle{display:flex;position:fixed;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:42;width:54px;height:54px;align-items:center;justify-content:center;border:0;border-radius:50%;background:var(--on);color:#fff;font-size:25px;box-shadow:0 4px 16px rgba(15,23,42,.3);cursor:pointer}.mobile-menu:not([hidden]){display:flex;position:fixed;inset:0;z-index:41;align-items:flex-end;justify-content:flex-end;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 82px);background:rgba(15,23,42,.38)}.mobile-menu-card{width:min(360px,100%);max-height:min(72vh,620px);display:flex;flex-direction:column;overflow:hidden;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:18px;box-shadow:0 12px 40px rgba(15,23,42,.3)}.mobile-menu-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--bd)}.mobile-menu-head h2{margin:0;font-size:18px}.mobile-menu-close{width:40px;height:40px;border:0;border-radius:10px;background:var(--calc);color:var(--tx);font-size:22px;cursor:pointer}.mobile-menu-items{overflow-y:auto;overscroll-behavior:contain;padding:8px 12px 14px}.mobile-menu-group{margin:8px 0}.mobile-menu-group h3{margin:0;padding:6px 8px;color:var(--mu);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.mobile-menu-items button{width:100%;min-height:44px;padding:10px 12px;text-align:left;border:0;border-radius:9px;background:transparent;color:var(--tx);font:inherit;cursor:pointer}.mobile-menu-items button[aria-current="page"]{background:var(--on);color:#fff;font-weight:600}.mobile-menu-items button:focus-visible,.mobile-menu-close:focus-visible,.mobile-menu-toggle:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}}
 .ph{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:120px}.pi{background:var(--calc);border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--mu);font-size:10px;text-align:center}.pi img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}.ph input[type=range]{width:110px;padding:0;margin:0}.th{float:left;width:36px;height:36px;object-fit:cover;border-radius:8px;margin-right:10px}
 @page{margin:6mm}
 @media print{:root:root:root{--card:#fff;--tx:#000;--mu:#333;--bd:#bbb;--calc:#fff;--ok:#fff;--okt:#000;--navy:#000;--on:#000;color-scheme:light;padding:0}body::before,header,.app,dialog .np,dialog button{display:none!important}body{background:#fff}dialog[open]{position:static;display:block;width:80mm;max-width:100%;max-height:none;overflow:visible;margin:0;padding:0;border:0;box-shadow:none;background:#fff;color:#000}dialog .tw{overflow:visible}dialog table{white-space:normal;font-size:12px}dialog th{background:#fff;color:#000;border-bottom:1px solid #000;position:static}dialog td:first-child,dialog th:first-child{position:static;background:#fff}.tot div{background:none;padding:3px 0;border-top:1px dashed #999}.tot div.fin{font-size:15px;border-top:2px solid #000}}
 </style></head><body>
 <header><h1 id="appTitle">🛒 Kirana POS</h1><span id="storageStatus" role="status" aria-live="polite">Checking local storage…</span><button id="installAppBtn" class="hb" hidden>Install app</button><button class="hb" onclick="exp('json')">💾 Backup</button><button class="hb" onclick="imp()">📥 Import</button></header>
-<div class="app"><nav id="nav" aria-label="Main sections"></nav><main><div id="subnav" aria-label="Section pages"></div><section id="main"></section></main></div><dialog id="dlg"></dialog>
+<div class="app"><nav id="nav" aria-label="Main sections"></nav><main><div id="subnav" aria-label="Section pages"></div><section id="main"></section></main></div><button id="mobileMenuToggle" class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="mobileMenu" aria-expanded="false" onclick="toggleMobileMenu()">☰</button><div id="mobileMenu" class="mobile-menu" hidden onclick="if(event.target===this)toggleMobileMenu(false)"><div class="mobile-menu-card" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle"><div class="mobile-menu-head"><h2 id="mobileMenuTitle">Navigate</h2><button class="mobile-menu-close" type="button" aria-label="Close navigation menu" onclick="toggleMobileMenu(false)">×</button></div><nav id="mobileMenuItems" class="mobile-menu-items" aria-label="All app tabs"></nav></div></div><dialog id="dlg"></dialog>
 <script>
 const $=s=>document.querySelector(s),sum=(a,f)=>a.reduce((x,y)=>x+f(y),0);
 const money=n=>"₹"+(+n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
 const ago=d=>new Date(Date.now()-d*864e5-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10),today=()=>ago(0);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const KEY="kirana_pos_v1",FALLBACK_KEY=KEY+"_fallback",KS=["products","customers","suppliers","purchases","sales","expenses","payments","adjustments"];
-let db,cart=[],cur="billing",page="billing",pageByGroup={},bo={cust:"",pay:"Cash",disc:0,dtype:"₹",gst:0},ch=[];
+const KEY="kirana_pos_v1",FALLBACK_KEY=KEY+"_fallback",KS=["products","customers","suppliers","purchases","sales","expenses","payments","adjustments"],PAYMENT_METHODS=["Cash","UPI","Card","Credit"];
+let db,cart=[],cur="billing",page="billing",pageByGroup={},bo={cust:"",pay:"Cash",disc:0,dtype:"₹",gst:0},ch=[],editingSaleId=null,editingSaleDate="";
+const revenueChartView={level:"month",month:"",day:"",hour:""};
 const P=id=>db.products.find(p=>p.id==id)||{name:"(deleted)",pack:1,costPc:0,retail:0,wholesale:0,cat:"—",min:0,open:0};
 const cn=id=>id?(db.customers.find(c=>c.id==id)||{name:"(deleted)"}).name:"Walk-in";
 const sn=id=>(db.suppliers.find(c=>c.id==id)||{name:"(deleted)"}).name;
 const badge=(t,c)=>`<span class="b ${c}">${t}</span>`;
 const stock=id=>{const p=P(id);return(+p.open)+sum(db.purchases.filter(x=>x.pid==id),x=>x.pcs)-sum(db.sales,s=>sum(s.lines.filter(l=>l.pid==id),l=>l.pcs))+sum(db.adjustments.filter(x=>x.pid==id),x=>x.pcs)};
+const stockBreakdown=p=>{const pcs=stock(p.id),pack=+p.pack||1;return pcs<0?`${pcs} units`:`${Math.floor(pcs/pack)} boxes + ${pcs%pack} units`};
 const ccs=c=>sum(db.sales.filter(s=>s.cust==c.id&&s.pay=="Credit"),s=>s.total),crp=c=>sum(db.payments.filter(p=>p.type=="Customer Payment"&&p.party==c.id),p=>+p.amount);
 const spu=s=>sum(db.purchases.filter(p=>p.sup==s.id),p=>+p.amount),spd=s=>sum(db.payments.filter(p=>p.type=="Supplier Payment"&&p.party==s.id),p=>+p.amount);
 const profit=s=>s.taxable-sum(s.lines,l=>l.cogs);
 const nextId=(k,pre)=>pre+(1+Math.max(1000,...db[k].map(r=>parseInt(String(r.id).split("-")[1])||0)));
-function calc(items,disc,dtype,gst){const lines=items.map(i=>{const p=P(i.pid),W=i.mode=="W",pcs=W?i.qty*p.pack:i.qty,price=W?p.wholesale:p.retail;return{pid:i.pid,name:p.name,cat:p.cat,qty:i.qty,mode:i.mode,price,pcs,total:i.qty*price,cogs:pcs*p.costPc}});
+function calc(items,disc,dtype,gst){const lines=items.map(i=>{const p=P(i.pid),W=i.mode=="W",pcs=W?i.qty*(i.pack??p.pack):i.qty,price=i.price??(W?p.wholesale:p.retail);return{pid:i.pid,name:i.name||p.name,cat:i.cat||p.cat,qty:i.qty,mode:i.mode,price,pcs,total:i.qty*price,cogs:pcs*(i.costPc??p.costPc)}});
  const sub=sum(lines,l=>l.total),d=Math.min(sub,dtype=="%"?sub*disc/100:disc),tax=sub-d,g=tax*gst/100;return{lines,sub,disc:d,taxable:tax,gst:g,total:tax+g}}
-function mk(items,o){return{...calc(items,o.disc,o.dtype,o.gst),id:nextId("sales","INV-"),date:o.date,cust:o.cust,pay:o.pay,rate:o.gst}}
+function mk(items,o){return{...calc(items,o.disc,o.dtype,o.gst),id:nextId("sales","INV-"),date:o.date,cust:o.cust,pay:o.pay,rate:o.gst,discountType:o.dtype=="%"?"%":"₹",discountValue:+o.disc||0}}
 function seed(){const pr=[["Aashirvad Atta 5kg","Staples","Aashirvad","8901725001",4,240,265,1000,40,10],["Tata Salt 1kg","Staples","Tata","8904043901",25,24,28,650,100,30],["Fortune Sunflower Oil 1L","Oils","Fortune","8906007201",12,128,145,1680,60,15],["Parle-G Biscuit 100g","Snacks","Parle","8901719101",48,8.5,10,470,200,50],["Maggi Noodles 70g","Snacks","Nestle","8901058801",48,12,14,640,150,40],["Surf Excel 1kg","Household","HUL","8901030801",10,190,215,2050,30,8],["Tata Tea Gold 250g","Beverages","Tata","8904043501",20,125,140,2700,45,10],["Amul Butter 100g","Dairy","Amul","8901262101",40,52,58,2250,20,25]].map((a,i)=>({id:"PRD-"+(1001+i),name:a[0],cat:a[1],brand:a[2],barcode:a[3],unit:"Pcs",pack:a[4],costPc:a[5],retail:a[6],wholesale:a[7],open:a[8],min:a[9]}));
  db={products:pr,customers:[["Ramesh Patil","9822000001"],["Sunita Devi","9822000002"],["Kiran Stores","9822000003"]].map((a,i)=>({id:"CUS-"+(1001+i),name:a[0],phone:a[1],address:"Main Road"})),suppliers:[{id:"SUP-1001",name:"Shree Traders",contact:"Mahesh",phone:"9811000001"},{id:"SUP-1002",name:"Patel Wholesale",contact:"Jayesh",phone:"9811000002"}],purchases:[],sales:[],expenses:[],payments:[],adjustments:[]};
  pr.slice(0,7).forEach((p,i)=>db.purchases.push({id:"PUR-"+(1001+i),date:ago(70),sup:db.suppliers[i%2].id,pid:p.id,qty:3,unit:"Box",pcs:3*p.pack,amount:3*p.pack*p.costPc}));
@@ -107,24 +113,48 @@ function seed(){const pr=[["Aashirvad Atta 5kg","Staples","Aashirvad","890172500
  for(let i=0;i<45;i++){const items=[];for(let j=0,n=1+Math.floor(r()*3);j<n;j++){const w=r()<.2;items.push({pid:pr[Math.floor(r()*8)].id,qty:w?1:1+Math.floor(r()*4),mode:w?"W":"R"})}
   const pay=["Cash","UPI","Card","Credit"][Math.floor(r()*4)];db.sales.push(mk(items,{date:ago(Math.floor(r()*110)),cust:pay=="Credit"?db.customers[Math.floor(r()*3)].id:"",pay,disc:r()<.3?10:0,dtype:"₹",gst:r()<.3?5:0}))}
  db.payments.push({id:"PAY-1001",date:ago(20),type:"Customer Payment",party:"CUS-1001",mode:"Cash",amount:300},{id:"PAY-1002",date:ago(30),type:"Supplier Payment",party:"SUP-1001",mode:"UPI",amount:5000});
- [["Rent",8000],["Electricity",1800],["Wages",6000],["Freight",900],["Refreshments",350]].forEach((e,i)=>db.expenses.push({id:"EXP-"+(1001+i),date:ago(5+i*3),cat:e[0],amount:e[1],note:""}))}
-function fix(){KS.forEach(k=>db[k]=db[k]||[]);db.storeProfile=db.storeProfile||{}}
+ [["Rent",8000],["Electricity",1800],["Wages",6000],["Freight",900],["Refreshments",350]].forEach((e,i)=>db.expenses.push({id:"EXP-"+(1001+i),date:ago(5+i*3),cat:e[0],amount:e[1],note:""}));
+ db.products.forEach(p=>{const balance=stock(p.id);if(balance<0)p.open-=balance})
+}
+function fix(target=db){
+ if(!target||typeof target!="object"||Array.isArray(target))throw new Error("Saved data has an invalid format");
+ let changed=false;
+ KS.forEach(k=>{if(target[k]===undefined){target[k]=[];changed=true}else if(!Array.isArray(target[k]))throw new Error("Saved "+k+" data has an invalid format")});
+ if(target.storeProfile===undefined){target.storeProfile={};changed=true}else if(!target.storeProfile||typeof target.storeProfile!="object"||Array.isArray(target.storeProfile))throw new Error("Saved store profile has an invalid format");
+ return changed
+}
 const storeName=()=>String(db.storeProfile.name||db.shop||"Kirana POS").trim()||"Kirana POS";
 let storageDb=null,storageQueue=Promise.resolve(),storageMode="pending";
 function storageStatus(text,error=false){const e=$("#storageStatus");if(e){e.textContent=text;e.classList.toggle("storage-error",error)}}
 function openStorageDb(){return new Promise((resolve,reject)=>{if(!window.indexedDB){reject(new Error("IndexedDB is unavailable"));return}const request=indexedDB.open("kirana_pos_device_data",1);request.onupgradeneeded=()=>request.result.createObjectStore("app");request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error||new Error("Could not open device storage"))})}
 function readStorageDb(database){return new Promise((resolve,reject)=>{const tx=database.transaction("app","readonly"),request=tx.objectStore("app").get(KEY);request.onsuccess=()=>resolve(request.result||null);request.onerror=()=>reject(request.error||new Error("Could not read device storage"))})}
 function writeStorageDb(database,snapshot){return new Promise((resolve,reject)=>{const tx=database.transaction("app","readwrite");tx.objectStore("app").put(snapshot,KEY);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error||new Error("Could not save to device storage"));tx.onabort=()=>reject(tx.error||new Error("Device storage save was interrupted"))})}
+function parseSavedData(value){
+ const raw=typeof value=="string"?value:value&&value.data!==undefined?value.data:value;
+ const parsed=typeof raw=="string"?JSON.parse(raw):raw;
+ if(!parsed||typeof parsed!="object"||Array.isArray(parsed)||!Array.isArray(parsed.products))throw new Error("Saved data has an invalid format");
+ KS.forEach(k=>{if(parsed[k]!==undefined&&!Array.isArray(parsed[k]))throw new Error("Saved "+k+" data has an invalid format")});
+ if(parsed.storeProfile!==undefined&&(!parsed.storeProfile||typeof parsed.storeProfile!="object"||Array.isArray(parsed.storeProfile)))throw new Error("Saved store profile has an invalid format");
+ return parsed
+}
 async function load(){
- let stored=null;
+ const candidates=[];let foundSavedData=false,stored=null,storageReadFailed=false,storageSource;
  try{storageDb=await openStorageDb();stored=await readStorageDb(storageDb);storageMode="indexeddb"}
- catch(e){storageDb=null;storageMode="localstorage";storageStatus("Using browser local storage",true)}
- if(stored){try{db=JSON.parse(typeof stored=="string"?stored:stored.data)}catch(e){storageStatus("Saved data could not be read; restore a backup",true)}}
- try{const fallback=JSON.parse(localStorage.getItem(FALLBACK_KEY)||"null");if(fallback&&fallback.data)db=JSON.parse(fallback.data)}catch(e){storageStatus("Fallback local data could not be read; restore a backup",true)}
- if(!db&&storageMode=="indexeddb"){try{const legacy=localStorage.getItem(KEY);if(legacy)db=JSON.parse(legacy)}catch(e){storageStatus("Previous local data could not be read; restore a backup",true)}}
- if(!db||!db.products)seed();
- fix();
- if(storageMode=="indexeddb"&&!stored)await save();
+ catch(e){storageDb=null;storageMode="localstorage";storageStatus("Using browser local storage",true);storageReadFailed=!!window.indexedDB;console.warn("IndexedDB could not be read; checking local backup storage",e)}
+ if(stored!==null){foundSavedData=true;try{candidates.push({data:parseSavedData(stored),savedAt:Number(stored&&stored.savedAt)||0,source:"indexeddb"})}catch(e){console.error("The primary saved data could not be read; checking recovery copies",e)}}
+ let fallbackRaw=null;
+ try{fallbackRaw=localStorage.getItem(FALLBACK_KEY)}catch(e){storageReadFailed=true;console.error("The local recovery copy could not be checked",e)}
+ if(fallbackRaw!==null){foundSavedData=true;try{const fallback=JSON.parse(fallbackRaw);candidates.push({data:parseSavedData(fallback),savedAt:Number(fallback&&fallback.savedAt)||0,source:"fallback"})}catch(e){console.error("The local recovery copy could not be read; checking other copies",e)}}
+ let legacy=null;
+ try{legacy=localStorage.getItem(KEY)}catch(e){storageReadFailed=true;console.error("The previous local save could not be checked",e)}
+ if(legacy!==null){foundSavedData=true;try{candidates.push({data:parseSavedData(legacy),savedAt:0,source:"legacy"})}catch(e){console.error("The previous local save could not be read",e)}}
+ if(candidates.length){
+  const saved=candidates.reduce((latest,candidate)=>candidate.savedAt>latest.savedAt?candidate:latest);
+  db=saved.data;storageSource=saved.source
+ }else if(foundSavedData||storageReadFailed)throw new Error("Saved device data could not be safely loaded. It has not been replaced; restore a JSON backup using Import.");
+ else{seed();storageSource="seed"}
+ const migrated=fix();
+ if(storageSource!="indexeddb"||migrated)await save();
  else if(storageMode=="indexeddb")storageStatus("Saved on this device");
  else if(storageMode=="localstorage")storageStatus("Local save fallback active",true);
  try{if(navigator.storage&&navigator.storage.persist)await navigator.storage.persist()}catch(e){}
@@ -147,20 +177,20 @@ function save(){
 }
 const opP=()=>db.products.map(p=>[p.id,esc(p.name)]);
 const T={
-products:{title:"Product Master",pre:"PRD-",f:[["name","Product name"],["cat","Category"],["brand","Brand","text",0,1],["barcode","Barcode / EAN","text",0,1],["unit","Base unit","sel",["Pcs","Kg","Pack"]],["pack","Box pack size","number"],["costPc","Cost per pc ₹","number"],["retail","Retail price (pc) ₹","number"],["wholesale","Wholesale price (box) ₹","number"],["open","Opening stock (pcs)","number"],["min","Min stock level","number"],["photo","Product photo","file",0,1]],
- cols:[["Photo",p=>phCell("products",p)],["Product",p=>`<b>${esc(p.name)}</b><small>${esc(p.brand)} · ${esc(p.barcode)}</small>`],["Category",p=>esc(p.cat)],["Box",p=>p.pack+" "+p.unit],["Cost/pc",p=>money(p.costPc)],["Cost/box",p=>money(p.costPc*p.pack)],["Retail",p=>money(p.retail)],["Wholesale",p=>money(p.wholesale)],["Stock (pcs)",p=>stock(p.id)],["Stock (box)",p=>(stock(p.id)/p.pack).toFixed(1)],["Status",p=>stock(p.id)<=p.min?badge("LOW STOCK","r"):badge("OK","g")]]},
+products:{title:"Product Master",pre:"PRD-",f:[["name","Product name"],["cat","Category"],["brand","Brand","text",0,1],["barcode","Barcode / EAN","text",0,1],["unit","Base unit","sel",["Pcs","Kg","Pack"]],["pack","Units per box","number"],["costPc","Cost per unit ₹","number"],["retail","Retail price (unit) ₹","number"],["wholesale","Wholesale price (box) ₹","number"],["openBoxes","Opening stock (boxes)","number"],["openLoose","Opening loose units","number"],["min","Min stock level (units)","number"],["photo","Product photo","file",0,1]],
+ cols:[["Photo",p=>phCell("products",p)],["Product",p=>`<b>${esc(p.name)}</b><small>${esc(p.brand)} · ${esc(p.barcode)}</small>`],["Category",p=>esc(p.cat)],["Units/box",p=>p.pack+" "+p.unit],["Cost/unit",p=>money(p.costPc)],["Cost/box",p=>money(p.costPc*p.pack)],["Retail",p=>money(p.retail)],["Wholesale",p=>money(p.wholesale)],["Total stock (boxes)",p=>(stock(p.id)/p.pack).toFixed(2)],["Boxes + loose units",p=>stockBreakdown(p)],["Status",p=>stock(p.id)<=p.min?badge("LOW STOCK","r"):badge("OK","g")]]},
 purchases:{title:"Purchases Log",pre:"PUR-",f:[],cols:[["Supplier bill",r=>esc(r.invoiceRef||"—")],["Date",r=>r.date],["Supplier",r=>esc(sn(r.sup))],["Items",r=>`${r.lines.length} line(s)<small>${r.lines.map(x=>esc(x.productName||P(x.pid).name)+" · "+x.qty+" "+(x.unit=="Box"?"box":"pcs")).join("<br>")}</small>`],["Total",r=>`<b>${money(r.amount)}</b>`]]},
 sales:{title:"Sales Log",note:"Invoices are created from Easy Billing. Deleting one returns its stock.",pre:"INV-",f:[],cols:[["Invoice",s=>s.id],["Date",s=>s.date],["Customer",s=>esc(cn(s.cust))],["Payment",s=>s.pay],["Items",s=>s.lines.length],["Subtotal",s=>money(s.sub)],["Discount",s=>money(s.disc)],["GST",s=>money(s.gst)],["Total",s=>`<b>${money(s.total)}</b>`],["Profit",s=>money(profit(s))]]},
 customers:{title:"Customer Ledger (Khata)",pre:"CUS-",f:[["name","Customer name"],["phone","Phone"],["address","Address","text",0,1]],cols:[["ID",c=>c.id],["Customer",c=>esc(c.name)],["Phone",c=>esc(c.phone)],["Credit sales",c=>money(ccs(c))],["Repaid",c=>money(crp(c))],["Outstanding",c=>`<b>${money(ccs(c)-crp(c))}</b>`],["Status",c=>ccs(c)-crp(c)>0?badge("DUE","r"):badge("CLEARED","g")]]},
 suppliers:{title:"Supplier Payables",pre:"SUP-",f:[["name","Supplier name"],["contact","Contact person"],["phone","Phone"],["photo","Business / owner photo","file",0,1]],cols:[["ID",s=>s.id],["Photo",s=>phCell("suppliers",s)],["Supplier",s=>esc(s.name)],["Contact",s=>esc(s.contact)],["Phone",s=>esc(s.phone)],["Purchases",s=>money(spu(s))],["Paid",s=>money(spd(s))],["Outstanding",s=>`<b>${money(spu(s)-spd(s))}</b>`],["Status",s=>spu(s)-spd(s)>0?badge("PAYABLE","a"):badge("CLEARED","g")]]},
 expenses:{title:"Expenses Log",pre:"EXP-",f:[["date","Date","date"],["cat","Category","sel",["Rent","Electricity","Wages","Freight","Refreshments","Other"]],["amount","Amount ₹","number"],["note","Note","text",0,1]],cols:[["ID",e=>e.id],["Date",e=>e.date],["Category",e=>e.cat],["Note",e=>esc(e.note)],["Amount",e=>money(e.amount)]]},
-adjustments:{title:"Stock Adjustments &amp; Returns",pre:"ADJ-",f:[["date","Date","date"],["pid","Product","sel",opP],["kind","Reason","sel",["Customer return (+)","Count correction (+)","Damage or expiry (−)","Count correction (−)"]],["qty","Quantity (pcs)","number"]],
+adjustments:{title:"Stock Adjustments &amp; Returns",pre:"ADJ-",f:[["date","Date","date"],["pid","Product","sel",opP],["kind","Reason","sel",["Stock received (+)","Customer return (+)","Count correction (+)","Damage or expiry (−)","Count correction (−)"]],["qty","Quantity (pcs)","number"]],
  hook:r=>{r.pcs=r.qty*(r.kind.includes("(+)")?1:-1)},cols:[["ID",r=>r.id],["Date",r=>r.date],["Product",r=>esc(P(r.pid).name)],["Reason",r=>r.kind],["Pcs",r=>(r.pcs>0?"+":"")+r.pcs]]},
 payments:{title:"Payments Voucher Log",pre:"PAY-",f:[["date","Date","date"],["party","Party","sel",()=>[...db.customers.map(c=>["C|"+c.id,"Customer: "+esc(c.name)]),...db.suppliers.map(s=>["S|"+s.id,"Supplier: "+esc(s.name)])]],["mode","Mode","sel",["Cash","UPI","Card","Bank"]],["amount","Amount ₹","number"]],
  hook:r=>{const a=r.party.split("|");r.type=a[0]=="C"?"Customer Payment":"Supplier Payment";r.party=a[1]},cols:[["ID",p=>p.id],["Date",p=>p.date],["Type",p=>p.type],["Party",p=>esc(p.type[0]=="C"?cn(p.party):sn(p.party))],["Mode",p=>p.mode],["Amount",p=>money(p.amount)]]}};
 const inp=f=>{const[n,l,ty,o,opt]=f;if(ty=="file")return`<label>${l}<input name="${n}" type="file" accept="image/*"></label>`;if(ty=="sel"){const ops=typeof o=="function"?o():o;return`<label>${l}<select name="${n}">${ops.map(x=>Array.isArray(x)?`<option value="${x[0]}">${x[1]}</option>`:`<option>${x}</option>`).join("")}</select></label>`}
- return`<label>${l}<input name="${n}" type="${ty||"text"}" ${ty=="number"?'step="any" min="0"':""} ${ty=="date"?`value="${today()}"`:""} ${opt?"":"required"}></label>`};
-const ACT={customers:r=>`<button class="x" onclick="settle('C','${r.id}')">💰 Receive</button> `,suppliers:r=>`<button class="x" onclick="settle('S','${r.id}')">💸 Pay</button> `,sales:r=>`<button class="x" onclick="viewInv('${r.id}')">🧾 View</button> `,purchases:r=>`<button class="x" onclick="editPurchaseBill('${r.id}')">✏️ Edit bill</button> `};
+ return`<label>${l}<input name="${n}" type="${ty||"text"}" ${!ty||ty=="text"?'lang="und"':""} ${ty=="number"?(n=="pack"||n=="openBoxes"?'step="1" min="0"':'step="any" min="0"'):""} ${n=="pack"&&ed&&ed.k=="products"?'oninput="syncOpeningStockPack(this.value)"':""} ${ty=="date"?`value="${today()}"`:""} ${opt?"":"required"}></label>`};
+const ACT={products:r=>`<button class="x" onclick="quickAddStock('${r.id}')">＋ Add stock</button> `,customers:r=>`<button class="x" onclick="settle('C','${r.id}')">💰 Receive</button> `,suppliers:r=>`<button class="x" onclick="settle('S','${r.id}')">💸 Pay</button> `,sales:r=>`<button class="x" onclick="viewInv('${r.id}')">🧾 View</button> <button class="x" onclick="editSale('${r.id}')">✏️ Edit invoice</button> `,purchases:r=>`<button class="x" onclick="editPurchaseBill('${r.id}')">✏️ Edit bill</button> `};
 const listState={},selectedProducts=new Set();
 let purchaseDraft=null;
 const sortChoices=k=>k=="products"?[["stock-low","Stock: low to high"],["stock-high","Stock: high to low"],["price-low","Retail price: low to high"],["price-high","Retail price: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]]:k=="purchases"?[["date-new","Date: newest first"],["date-old","Date: oldest first"],["amount-low","Bill total: low to high"],["amount-high","Bill total: high to low"],["qty-low","Quantity (pcs): low to high"],["qty-high","Quantity (pcs): high to low"]]:k=="sales"?[["date-new","Date: newest first"],["date-old","Date: oldest first"],["amount-low","Total: low to high"],["amount-high","Total: high to low"]]:k=="customers"?[["amount-low","Balance: low to high"],["amount-high","Balance: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]]:k=="suppliers"?[["amount-low","Payable: low to high"],["amount-high","Payable: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]]:[["date-new","Date: newest first"],["date-old","Date: oldest first"],["amount-low","Amount: low to high"],["amount-high","Amount: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]];
@@ -179,7 +209,7 @@ function listTools(k){
  const s=listState[k]||{open:false,query:"",from:"",to:"",sort:k=="products"||k=="customers"||k=="suppliers"?"name-az":"date-new",filter:"all"},filters=listFilterOptions(k),hasDate=["purchases","sales","expenses","adjustments","payments"].includes(k);
  listState[k]=s;
  return`<div class="list-tools"><button class="btn ghost" onclick="toggleListMenu('${k}')">☰ Filter &amp; sort</button>${k=="products"?`<button class="btn ghost" onclick="deleteSelectedProducts()" ${selectedProducts.size?"":"disabled"}>🗑 Delete selected (${selectedProducts.size})</button>`:""}<span class="list-count" id="list-count-${k}"></span></div><div class="list-menu ${s.open?"open":""}" id="list-menu-${k}">
- <label>Search<input type="search" value="${esc(s.query)}" placeholder="Search this list…" oninput="updateList('${k}','query',this.value)"></label>
+ <label>Search<input type="search" lang="und" value="${esc(s.query)}" placeholder="Search this list…" oninput="updateList('${k}','query',this.value)"></label>
  ${hasDate?`<label>From date<input type="date" value="${esc(s.from)}" oninput="updateList('${k}','from',this.value)"></label><label>To date<input type="date" value="${esc(s.to)}" oninput="updateList('${k}','to',this.value)"></label>`:""}
  <label>Sort by<select onchange="updateList('${k}','sort',this.value)">${sortChoices(k).map(o=>`<option value="${o[0]}"${s.sort==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>
  ${filters?`<label>${k=="products"?"Category / stock":k=="purchases"?"Supplier":k=="sales"?"Payment method":k=="expenses"?"Category":k=="adjustments"?"Reason":k=="payments"?"Party type":"Balance status"}<select onchange="updateList('${k}','filter',this.value)">${filters.map(o=>`<option value="${esc(o[0])}"${s.filter==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>`:""}
@@ -254,7 +284,7 @@ function table(cols,rows,k){
  return`<div class="tw"><table><thead><tr>${head}${cols.map(c=>`<th>${c[0]}</th>`).join("")}${k?"<th></th>":""}</tr></thead><tbody>${rows.map(r=>`<tr>${choose?`<td class="select-col"><input type="checkbox" aria-label="Select ${esc(r.name)}" onchange="selectProduct('${r.id}',this.checked)" ${selectedProducts.has(r.id)?"checked":""}></td>`:""}${cols.map(c=>`<td>${c[1](r)}</td>`).join("")}${k?`<td>${ACT[k]?ACT[k](r):""}${T[k]&&T[k].f.length?`<button class="x" onclick="edit('${k}','${r.id}')">✏️</button> `:""}<button class="x" onclick="del(this,'${k}','${r.id}')">🗑</button></td>`:""}</tr>`).join("")||`<tr><td class="mu" colspan="${cols.length+(choose?1:0)+(k?1:0)}">No matching records</td></tr>`}</tbody></table></div>`
 }
 function renderList(k){const target=$("#list-table-"+k);if(!target)return;const rows=listRows(k);target.innerHTML=table(T[k].cols,rows,k);const count=$("#list-count-"+k);if(count)count.textContent=`Showing ${rows.length} of ${k=="purchases"?purchaseBills().length:db[k].length}`;const bulk=$('#main button[onclick="deleteSelectedProducts()"]');if(k=="products"&&bulk){bulk.disabled=!selectedProducts.size;bulk.textContent=`🗑 Delete selected (${selectedProducts.size})`}}
-function logView(k){if(k=="purchases")return purchaseView();const t=T[k];return`<h2>${t.title}</h2>`+(t.f.length?`<div class="card"><form class="fg" onsubmit="return add('${k}',event)">${t.f.map(inp).join("")}<button class="btn">${ed&&ed.k==k?"Save changes":"+ Add"}</button>${ed&&ed.k==k?`<button type="button" class="btn ghost" onclick="ed=null;render()">Cancel</button>`:""}</form></div>`:`<p class="mu">${t.note}</p>`)+`<div class="card">${listTools(k)}<div id="list-table-${k}"></div></div>`}
+function logView(k){if(k=="purchases")return purchaseView();const t=T[k];return`<h2>${t.title}</h2>`+(k=="products"?`<p class="mu">Enter starting stock as full boxes plus any loose units. Use <b>＋ Add stock</b> beside a product to quickly record more boxes or loose units later.</p>`:"")+(t.f.length?`<div class="card"><form class="fg" onsubmit="return add('${k}',event)">${t.f.map(inp).join("")}<button class="btn">${ed&&ed.k==k?"Save changes":"+ Add"}</button>${ed&&ed.k==k?`<button type="button" class="btn ghost" onclick="ed=null;render()">Cancel</button>`:""}</form></div>`:`<p class="mu">${t.note}</p>`)+`<div class="card">${listTools(k)}<div id="list-table-${k}"></div></div>`}
 let ed=null;
 function blankPurchaseDraft(){return{date:today(),sup:db.suppliers[0]?.id||"",invoiceRef:"",note:"",lines:[]}}
 function ensurePurchaseDraft(){if(!purchaseDraft)purchaseDraft=db.purchaseDraft?JSON.parse(JSON.stringify(db.purchaseDraft)):blankPurchaseDraft();return purchaseDraft}
@@ -266,8 +296,8 @@ function purchaseView(){
  <div class="fg">
  <label>Purchase date<input type="date" value="${esc(d.date||today())}" onchange="setPurchaseHeader('date',this.value)" required></label>
  <label>Supplier<select onchange="setPurchaseHeader('sup',this.value)" required><option value="">Select supplier</option>${db.suppliers.map(s=>`<option value="${esc(s.id)}"${s.id==d.sup?" selected":""}>${esc(s.name)}</option>`).join("")}</select></label>
- <label>Supplier invoice / bill no. (optional)<input value="${esc(d.invoiceRef||"")}" oninput="setPurchaseHeader('invoiceRef',this.value)" placeholder="Enter the wholesaler's bill number"></label>
- <label>Note (optional)<input value="${esc(d.note||"")}" oninput="setPurchaseHeader('note',this.value)" placeholder="Payment terms, delivery note, etc."></label>
+ <label>Supplier invoice / bill no. (optional)<input lang="und" value="${esc(d.invoiceRef||"")}" oninput="setPurchaseHeader('invoiceRef',this.value)" placeholder="Enter the wholesaler's bill number"></label>
+ <label>Note (optional)<input lang="und" value="${esc(d.note||"")}" oninput="setPurchaseHeader('note',this.value)" placeholder="Payment terms, delivery note, etc."></label>
  </div>
  <h3>Products on this bill</h3><div id="purchase-lines">${purchaseLineRows(d,products)}</div>
  ${products.length?`<div class="row"><button type="button" class="btn ghost" onclick="addPurchaseLine()">＋ Add product line</button></div>`:`<div class="card"><p><b>No products have been added to Product Master yet.</b></p><p class="mu">Create your products first. Then return here and use “＋ Add product line” to select each item on the supplier’s bill.</p><button type="button" class="btn" onclick="openProductsForPurchase()">＋ Go to Product Master</button></div>`}
@@ -287,12 +317,13 @@ function purchaseLineRows(d,products){
 function setPurchaseHeader(key,value){const d=ensurePurchaseDraft();d[key]=value;persistPurchaseDraft()}
 function addPurchaseLine(){
  const d=ensurePurchaseDraft(),p=db.products[0];if(!p)return;
- d.lines.push({pid:p.id,qty:1,unit:"Pcs",unitCost:+p.costPc||0});persistPurchaseDraft();
+ d.lines.push({pid:p.id,qty:1,unit:"Pcs",unitCost:+p.costPc||0,pack:+p.pack||1});persistPurchaseDraft();
  const target=$("#purchase-lines");if(target)target.innerHTML=purchaseLineRows(d,db.products);updatePurchaseTotals()
 }
 function updatePurchaseLine(index,key,value){
  const d=ensurePurchaseDraft(),line=d.lines[index];if(!line)return;
  line[key]=key=="qty"||key=="unitCost"?(+value||0):value;
+ if(key=="unit"||key=="pid")line.pack=line.unit=="Box"?(+P(line.pid).pack||1):1;
  if(key=="unit")line.unitCost=(line.unit=="Box"?P(line.pid).costPc*P(line.pid).pack:P(line.pid).costPc)||0;
  if(key=="pid")line.unitCost=(line.unit=="Box"?P(line.pid).costPc*P(line.pid).pack:P(line.pid).costPc)||0;
  persistPurchaseDraft();
@@ -303,49 +334,97 @@ function removePurchaseLine(index){const d=ensurePurchaseDraft();d.lines.splice(
 function updatePurchaseTotals(){const d=ensurePurchaseDraft(),total=$("#purchase-total");if(total)total.textContent=money(sum(d.lines,x=>(+x.qty||0)*(+x.unitCost||0)))}
 function editPurchaseBill(id){
  const bill=purchaseBills().find(x=>x.id==id);if(!bill)return;
- purchaseDraft={editingBill:bill.id,date:bill.date,sup:bill.sup,invoiceRef:bill.invoiceRef,note:bill.lines[0]?.note||"",lines:bill.lines.map(x=>({pid:x.pid,qty:+x.qty||1,unit:x.unit=="Box"?"Box":"Pcs",unitCost:(+x.qty?+x.amount/+x.qty:0)}))};
+ purchaseDraft={editingBill:bill.id,date:bill.date,sup:bill.sup,invoiceRef:bill.invoiceRef,note:bill.lines[0]?.note||"",lines:bill.lines.map(x=>({pid:x.pid,qty:+x.qty||1,unit:x.unit=="Box"?"Box":"Pcs",unitCost:(+x.qty?+x.amount/+x.qty:0),pack:x.unit=="Box"&&+x.qty&&Number.isFinite(+x.pcs)?+x.pcs/+x.qty:(+P(x.pid).pack||1)}))};
  persistPurchaseDraft();render();$("#main h3").scrollIntoView({behavior:"smooth",block:"center"})
 }
 function cancelPurchaseEdit(){purchaseDraft=blankPurchaseDraft();persistPurchaseDraft();render()}
 function openProductsForPurchase(){persistPurchaseDraft();pageByGroup.inventory="products";go("inventory")}
 function savePurchaseBill(){
  const d=ensurePurchaseDraft(),message="Select a supplier, date and at least one valid product line.";
- if(!d.sup||!db.suppliers.some(s=>s.id==d.sup)||!d.date||!d.lines.length||d.lines.some(x=>!db.products.some(p=>p.id==x.pid)||!Number.isFinite(+x.qty)||!(+x.qty>0)||!Number.isFinite(+x.unitCost)||+x.unitCost<0)){alert(message);return}
+ if(!d.sup||!db.suppliers.some(s=>s.id==d.sup)||!d.date||!d.lines.length||d.lines.some(x=>!db.products.some(p=>p.id==x.pid)||!Number.isFinite(+x.qty)||!(+x.qty>0)||!Number.isFinite(+x.unitCost)||+x.unitCost<0||(x.unit=="Box"&&(!Number.isFinite(+(x.pack??P(x.pid).pack))||+(x.pack??P(x.pid).pack)<1)))){alert(message);return}
  const group=d.editingBill||nextId("purchases","PUR-")+"-BILL",old=db.purchases.filter(x=>String(x.billId||x.id)==String(d.editingBill||""));
  let serial=Math.max(1000,...db.purchases.map(x=>parseInt(String(x.id).split("-")[1])||0))+1;
- const lines=d.lines.map((x,i)=>{const p=P(x.pid),qty=+x.qty,unit=x.unit=="Box"?"Box":"Pcs";return{id:old[i]?.id||"PUR-"+serial++,billId:group,date:d.date,sup:d.sup,invoiceRef:d.invoiceRef.trim(),note:d.note.trim(),pid:x.pid,productName:p.name,qty,unit,pcs:unit=="Box"?qty*p.pack:qty,amount:qty*(+x.unitCost)}});
+ const lines=d.lines.map((x,i)=>{const p=P(x.pid),qty=+x.qty,unit=x.unit=="Box"?"Box":"Pcs";return{id:old[i]?.id||"PUR-"+serial++,billId:group,date:d.date,sup:d.sup,invoiceRef:d.invoiceRef.trim(),note:d.note.trim(),pid:x.pid,productName:p.name,qty,unit,pcs:unit=="Box"?qty*(+x.pack||+p.pack):qty,amount:qty*(+x.unitCost)}});
  if(d.editingBill)db.purchases=db.purchases.filter(x=>String(x.billId||x.id)!=String(d.editingBill));
  db.purchases.push(...lines);purchaseDraft=blankPurchaseDraft();db.purchaseDraft=purchaseDraft;save();render()
 }
-async function add(k,e){e.preventDefault();const t=T[k],r={},old=ed&&ed.k==k?db[k].find(x=>x.id==ed.id):null;new FormData(e.target).forEach((v,n)=>r[n]=v);for(const f of t.f){if(f[2]=="number")r[f[0]]=+r[f[0]]||0;if(f[2]=="file"){const x=r[f[0]];if(x&&x.size){try{const original=await readImageSource(x),photo=await cropImage(original);if(!photo)return false;r[f[0]]=photo;r.photoOriginal=original}catch(err){alert("Could not open this image. Please choose another image.");return false}}else{r[f[0]]=(old&&old.photo)||"";r.photoOriginal=(old&&old.photoOriginal)||""}}}r.id=old?old.id:nextId(k,t.pre);if(t.hook)t.hook(r);if(old){db[k][db[k].indexOf(old)]=r;ed=null}else db[k].push(r);save();render();return false}
+async function add(k,e){e.preventDefault();const t=T[k],r={},old=ed&&ed.k==k?db[k].find(x=>x.id==ed.id):null;new FormData(e.target).forEach((v,n)=>r[n]=v);for(const f of t.f){if(f[2]=="number")r[f[0]]=+r[f[0]]||0;if(f[2]=="file"){const x=r[f[0]];if(x&&x.size){try{const original=await readImageSource(x),photo=await cropImage(original);if(!photo)return false;r[f[0]]=photo;r.photoOriginal=original}catch(err){alert("Could not open this image. Please choose another image.");return false}}else{r[f[0]]=(old&&old.photo)||"";r.photoOriginal=(old&&old.photoOriginal)||""}}}if(k=="products"){const pack=Number(r.pack),boxes=Number(r.openBoxes),loose=Number(r.openLoose);if(!Number.isInteger(pack)||pack<1){alert("Enter a whole number of units per box.");return false}if(!Number.isInteger(boxes)||boxes<0||!Number.isFinite(loose)||loose<0){alert("Opening boxes and loose units must be zero or more.");return false}r.open=boxes*pack+loose;delete r.openBoxes;delete r.openLoose}r.id=old?old.id:nextId(k,t.pre);if(t.hook)t.hook(r);if(old){db[k][db[k].indexOf(old)]=r;ed=null}else db[k].push(r);save();render();return false}
 function phCell(k,r){return`<div class="ph"><div class="pi" style="width:56px;height:56px">${r.photo?`<img src="${r.photo}" alt="" onclick="viewPh('${k}','${r.id}')">`:"No photo"}</div><label class="x">📷 ${r.photo?"Change":"Add"}<input type="file" accept="image/*" hidden onchange="setPh('${k}','${r.id}',this)"></label>${r.photo?`<button class="x" onclick="editPh('${k}','${r.id}')">✂️ Edit crop</button>`:""}</div>`}
 async function setPh(k,id,el){const f=el.files[0];if(!f)return;try{const original=await readImageSource(f),photo=await cropImage(original);if(!photo)return;const r=db[k].find(x=>x.id==id);r.photo=photo;r.photoOriginal=original;save();render()}catch(e){alert("Could not open this image. Please choose another image.")}finally{el.value=""}}
 async function editPh(k,id){const r=db[k].find(x=>x.id==id);if(!r||!r.photo)return;const original=r.photoOriginal||r.photo,photo=await cropImage(original);if(photo){r.photo=photo;r.photoOriginal=original;save();render()}}
 function viewPh(k,id){const r=db[k].find(x=>x.id==id);dlg(`<h3>${esc(r.name)}</h3><img src="${r.photo}" alt="" style="max-width:100%;border-radius:10px"><div class="row">${cls}</div>`)}
-function del(b,k,id){if(!b.dataset.s){b.dataset.s=1;b.textContent="Sure?";setTimeout(()=>{if(b.isConnected){delete b.dataset.s;b.textContent="🗑"}},3000);return}if(k=="products"){const name=P(id).name;db.purchases.forEach(r=>{if(r.pid==id)r.productName=r.productName||name});selectedProducts.delete(id)}if(k=="purchases"){db.purchases=db.purchases.filter(r=>String(r.billId||r.id)!=String(id));if(purchaseDraft&&String(purchaseDraft.editingBill)==String(id)){purchaseDraft=blankPurchaseDraft();db.purchaseDraft=purchaseDraft}}else db[k]=db[k].filter(r=>r.id!=id);save();render()}
-function edit(k,id){ed={k,id};render();const r=db[k].find(x=>x.id==id),fm=$("#main form");T[k].f.forEach(f=>{const el=fm.elements[f[0]];if(!el||f[2]=="file")return;let v=r[f[0]];if(k=="payments"&&f[0]=="party")v=(r.type[0]=="C"?"C|":"S|")+r.party;if(k=="adjustments"&&f[0]=="qty")v=Math.abs(r.pcs);el.value=v==null?"":v});fm.scrollIntoView({behavior:"smooth",block:"center"})}
-function viewInv(id){receipt(db.sales.find(s=>s.id==id))}
+function del(b,k,id){if(!b.dataset.s){b.dataset.s=1;b.textContent="Sure?";setTimeout(()=>{if(b.isConnected){delete b.dataset.s;b.textContent="🗑"}},3000);return}if(k=="customers"&&(db.sales.some(r=>r.cust==id)||db.payments.some(r=>r.type=="Customer Payment"&&r.party==id))){alert("This customer has linked invoices or payments and cannot be deleted. Keep the account to preserve its financial history.");return}if(k=="suppliers"&&(db.purchases.some(r=>r.sup==id)||db.payments.some(r=>r.type=="Supplier Payment"&&r.party==id))){alert("This supplier has linked bills or payments and cannot be deleted. Keep the account to preserve its financial history.");return}if(k=="products"){const name=P(id).name;db.purchases.forEach(r=>{if(r.pid==id)r.productName=r.productName||name});selectedProducts.delete(id)}if(k=="purchases"){db.purchases=db.purchases.filter(r=>String(r.billId||r.id)!=String(id));if(purchaseDraft&&String(purchaseDraft.editingBill)==String(id)){purchaseDraft=blankPurchaseDraft();db.purchaseDraft=purchaseDraft}}else db[k]=db[k].filter(r=>r.id!=id);save();render()}
+function edit(k,id){ed={k,id};render();const r=db[k].find(x=>x.id==id),fm=$("#main form");T[k].f.forEach(f=>{const el=fm.elements[f[0]];if(!el||f[2]=="file")return;let v=r[f[0]];if(k=="products"&&f[0]=="openBoxes")v=Math.floor((+r.open||0)/(+r.pack||1));if(k=="products"&&f[0]=="openLoose")v=(+r.open||0)%(+r.pack||1);if(k=="payments"&&f[0]=="party")v=(r.type[0]=="C"?"C|":"S|")+r.party;if(k=="adjustments"&&f[0]=="qty")v=Math.abs(r.pcs);el.value=v==null?"":v});if(k=="products")fm.dataset.stockPack=r.pack;fm.scrollIntoView({behavior:"smooth",block:"center"})}
+function syncOpeningStockPack(value){const form=$("#main form"),pack=Number(value),previous=Number(form.dataset.stockPack),boxes=form.elements.openBoxes,loose=form.elements.openLoose;if(!Number.isInteger(pack)||pack<1||!Number.isFinite(previous)||previous<1)return;const units=(Number(boxes.value)||0)*previous+(Number(loose.value)||0);boxes.value=Math.floor(units/pack);loose.value=units%pack;form.dataset.stockPack=pack}
+function viewInv(id){const sale=db.sales.find(s=>s.id==id);if(sale)receipt(sale)}
+function editSale(id){
+ const sale=db.sales.find(s=>s.id==id);if(!sale)return;
+ editingSaleId=sale.id;editingSaleDate=sale.date||today();cart=sale.lines.map(line=>{const p=P(line.pid),pcs=Number(line.pcs)||(+line.qty||0)*(line.mode=="W"?p.pack:1);return{pid:line.pid,qty:+line.qty||1,mode:line.mode=="W"?"W":"R",price:+line.price||0,costPc:pcs?((+line.cogs||0)/pcs):p.costPc,pack:line.mode=="W"&&+line.qty?pcs/(+line.qty):p.pack,name:line.name||p.name,cat:line.cat||p.cat}});
+ bo={cust:sale.cust||"",pay:sale.pay||"Cash",disc:Number.isFinite(+sale.discountValue)?+sale.discountValue:(+sale.disc||0),dtype:sale.discountType=="%"?"%":"₹",gst:+sale.rate||0};
+ editingSaleReturnPage=page;cur="billing";page="billing";pageByGroup.billing="billing";save();render();scrollTo(0,0)
+}
+let editingSaleReturnPage="sales";
+function cancelSaleEdit(){
+ editingSaleId=null;editingSaleDate="";cart=[];bo={cust:"",pay:"Cash",disc:0,dtype:"₹",gst:0};cur="billing";page=editingSaleReturnPage;pageByGroup.billing=page;render()
+}
 const hint=h=>{const e=$("#ph");if(e)e.innerHTML=h};
 function rtext(s){return[db.shop||"Kirana Store","Invoice "+s.id+" · "+s.date,"Customer: "+cn(s.cust)+" · "+s.pay,"",...s.lines.map(l=>l.name+"  "+l.qty+(l.mode=="W"?" box":" pc")+" x "+money(l.price)+" = "+money(l.total)),"","Subtotal: "+money(s.sub),"Discount: -"+money(s.disc),"GST ("+(s.rate||0)+"%): "+money(s.gst),"TOTAL: "+money(s.total),"","Thank you! Visit again."].join("\n")}
 function doPrint(id){const t=document.title;let f=0;const b=()=>{f=1},a=()=>{document.title=t;removeEventListener("afterprint",a)};document.title="Invoice "+id;addEventListener("beforeprint",b);addEventListener("afterprint",a);try{print()}catch(e){}removeEventListener("beforeprint",b);if(!f){document.title=t;removeEventListener("afterprint",a);hint("If no print window appeared, printing may be blocked in this view. Use Share / Copy, or open the app in a full browser tab and try again.")}}
 async function shareRcpt(id){const t=rtext(db.sales.find(s=>s.id==id));try{if(navigator.share){await navigator.share({title:"Invoice "+id,text:t});return}}catch(e){if(e&&e.name=="AbortError")return}try{await navigator.clipboard.writeText(t);hint("Receipt copied. Paste it into WhatsApp or any app.")}catch(e){hint(`<textarea readonly rows="8" onfocus="this.select()">${esc(t)}</textarea>`)}}
 function settle(t,id){const c=t=="C",p=(c?db.customers:db.suppliers).find(x=>x.id==id),due=c?ccs(p)-crp(p):spu(p)-spd(p);dlg(`<h3>${c?"Receive payment from":"Pay supplier"} ${esc(p.name)}</h3><p class="mu">Outstanding: ${money(due)}</p><label>Amount ₹<input id="sa" type="number" min="0" step="any" value="${Math.max(0,due)}"></label><label>Mode<select id="sm"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank</option></select></label><div class="row"><button class="btn" onclick="saveSettle('${t}','${id}')">Save payment</button>${cls}</div>`)}
 function saveSettle(t,id){const a=+$("#sa").value;if(!(a>0))return;db.payments.push({id:nextId("payments","PAY-"),date:today(),type:t=="C"?"Customer Payment":"Supplier Payment",party:id,mode:$("#sm").value,amount:a});save();$("#dlg").close();render()}
-function billingView(){const o=(a,v)=>a.map(x=>`<option${x==v?" selected":""}>${x}</option>`).join("");
-return`<h2>Easy Billing</h2><div class="pos"><div class="card"><div class="srch"><input id="q" placeholder="Search product name or barcode…" autocomplete="off" oninput="sug()" onkeydown="if(event.key=='Enter')sugFirst()"><div id="sg" class="sg"></div></div><div id="cartBox"></div></div>
+function quickAddStock(id){
+ const p=db.products.find(product=>product.id==id);if(!p)return;
+ dlg(`<h3>Add stock: ${esc(p.name)}</h3><p class="mu">Current stock: ${stockBreakdown(p)}. Each box contains ${p.pack} ${esc(p.unit)}.</p><div class="fg"><label>Boxes received<input id="quickStockBoxes" type="number" min="0" step="1" value="0" oninput="updateQuickStockPreview('${id}')"></label><label>Loose units received<input id="quickStockLoose" type="number" min="0" step="any" value="0" oninput="updateQuickStockPreview('${id}')"></label><label>Received date<input id="quickStockDate" type="date" value="${today()}" required></label></div><p id="quickStockPreview" class="mu">Total to add: 0 units</p><p id="quickStockError" class="storage-error" role="alert"></p><div class="row"><button class="btn" type="button" onclick="saveQuickStock('${id}')">Save stock received</button><button class="btn ghost" type="button" onclick="$('#dlg').close()">Cancel</button></div>`)
+}
+function updateQuickStockPreview(id){
+ const p=db.products.find(product=>product.id==id),boxes=Number($("#quickStockBoxes").value),loose=Number($("#quickStockLoose").value),preview=$("#quickStockPreview");if(!p||!preview)return;
+ const total=(Number.isFinite(boxes)&&boxes>0?boxes:0)*(+p.pack||1)+(Number.isFinite(loose)&&loose>0?loose:0);
+ preview.textContent=`Total to add: ${total} units (${(total/(+p.pack||1)).toFixed(2)} boxes)`
+}
+function saveQuickStock(id){
+ const p=db.products.find(product=>product.id==id),boxes=Number($("#quickStockBoxes").value),loose=Number($("#quickStockLoose").value),date=$("#quickStockDate").value,error=$("#quickStockError");
+ if(!p||!Number.isInteger(boxes)||boxes<0||!Number.isFinite(loose)||loose<0||!date){error.textContent="Enter a valid date, whole number of boxes, and non-negative loose units.";return}
+ const pcs=boxes*(+p.pack||1)+loose;if(!(pcs>0)){error.textContent="Enter at least one box or loose unit.";return}
+ db.adjustments.push({id:nextId("adjustments","ADJ-"),date,pid:p.id,kind:"Stock received (+)",qty:pcs,pcs});
+ const target=cur=="inventory"&&page=="products";save();$("#dlg").close();if(target)render();else{pageByGroup.inventory="products";go("inventory")}
+}
+function billingView(){const o=(a,v)=>a.map(x=>`<option${x==v?" selected":""}>${x}</option>`).join(""),sale=editingSaleId&&db.sales.find(s=>s.id==editingSaleId);
+return`<h2>${sale?"Edit Invoice "+esc(sale.id):"Easy Billing"}</h2>${sale?`<p class="mu">Update invoice details or items. Original prices and costs are retained unless changed. ${sale.pay=="Credit"?"Any customer payments already recorded remain unchanged; saving updates the customer's balance.":""}</p>`:""}<div class="pos"><div class="card"><div class="srch"><input id="q" lang="und" placeholder="Search product name or barcode…" autocomplete="off" oninput="sug()" onkeydown="if(event.key=='Enter')sugFirst()"><div id="sg" class="sg"></div></div><div id="cartBox"></div></div>
 <div class="card"><div class="fg" style="grid-template-columns:1fr 1fr"><label>Customer<select onchange="setBo('cust',this.value)"><option value="">Walk-in</option>${db.customers.map(c=>`<option value="${c.id}"${c.id==bo.cust?" selected":""}>${esc(c.name)}</option>`).join("")}</select></label>
-<label>Payment<select onchange="setBo('pay',this.value)">${o(["Cash","UPI","Card","Credit"],bo.pay)}</select></label>
+<label>Payment method<select id="paymentMethod" aria-label="Payment method" onchange="setBo('pay',this.value)">${o(PAYMENT_METHODS,bo.pay)}</select></label>
 <label>Discount<input type="number" min="0" value="${bo.disc}" oninput="setBo('disc',this.value)"></label><label>Type<select onchange="setBo('dtype',this.value)">${o(["₹","%"],bo.dtype)}</select></label>
-<label>GST %<input type="number" min="0" value="${bo.gst}" oninput="setBo('gst',this.value)"></label></div><div id="tot" class="tot"></div><button class="btn big" onclick="checkout()">Save Invoice / Checkout</button><p id="msg" class="mu"></p></div></div>`}
+<label>GST %<input type="number" min="0" value="${bo.gst}" oninput="setBo('gst',this.value)"></label>${sale?`<label>Invoice date<input id="saleDate" type="date" value="${esc(editingSaleDate)}" required></label>`:""}</div><div id="tot" class="tot"></div><button class="btn big" onclick="checkout()">${sale?"Save invoice changes":"Save Invoice / Checkout"}</button>${sale?`<button class="btn ghost big" type="button" onclick="cancelSaleEdit()">Cancel editing</button>`:""}<p id="msg" class="mu"></p></div></div>`}
 function setBo(k,v){bo[k]=k=="disc"||k=="gst"?+v||0:v;drawTot()}
 function sug(){const q=$("#q").value.trim().toLowerCase(),b=$("#sg");if(!q){b.innerHTML="";return}const m=db.products.filter(p=>(p.name+" "+p.barcode).toLowerCase().includes(q)).slice(0,8);
  b.innerHTML=m.length?m.map(p=>`<button onclick="addCart('${p.id}')">${p.photo?`<img class="th" src="${p.photo}" alt="">`:""}<b>${esc(p.name)}</b><small>${stock(p.id)} pcs in stock · ${money(p.retail)}</small></button>`).join(""):`<div class="mu pad">No match</div>`}
 function sugFirst(){const b=$("#sg button");if(b)b.click()}
 function addCart(id){const x=cart.find(i=>i.pid==id&&i.mode=="R");x?x.qty++:cart.push({pid:id,qty:1,mode:"R"});$("#q").value="";$("#sg").innerHTML="";drawCart();$("#q").focus()}
-function drawCart(){const sel=(m,v)=>m==v?" selected":"";$("#cartBox").innerHTML=cart.length?`<div class="tw"><table><thead><tr><th>Item</th><th>Price type</th><th>Qty</th><th>Rate</th><th>Total</th><th></th></tr></thead><tbody>${cart.map((i,x)=>{const p=P(i.pid),pr=i.mode=="W"?p.wholesale:p.retail;return`<tr><td>${p.photo?`<img class="th" src="${p.photo}" alt="">`:""}${esc(p.name)}<small>${stock(p.id)} pcs in stock</small></td><td><select onchange="cart[${x}].mode=this.value;drawCart()"><option value="R"${sel(i.mode,"R")}>Retail (Piece)</option><option value="W"${sel(i.mode,"W")}>Wholesale (Box)</option></select></td><td><input type="number" class="q" min="0.01" step="any" value="${i.qty}" onchange="cart[${x}].qty=+this.value>0?+this.value:1;drawCart()"></td><td>${money(pr)}</td><td><b>${money(pr*i.qty)}</b></td><td><button class="x" onclick="cart.splice(${x},1);drawCart()">✕</button></td></tr>`}).join("")}</tbody></table></div>`:`<p class="mu pad">Cart is empty. Search for a product above.</p>`;drawTot()}
+function setCartMode(index,mode){const item=cart[index];if(!item)return;item.mode=mode;item.pack=P(item.pid).pack;if(editingSaleId){item.price=mode=="W"?P(item.pid).wholesale:P(item.pid).retail;item.costPc=P(item.pid).costPc}drawCart()}
+function cartError(message){const e=$("#msg");if(e){e.textContent=message;e.style.color="var(--redt)"}}
+function updateCartLine(index){const item=cart[index];if(!item)return;const p=P(item.pid),price=item.price??(item.mode=="W"?p.wholesale:p.retail),total=$("#cart-line-total-"+index);if(total)total.textContent=money(price*item.qty);drawTot()}
+function setCartQty(index,value,final=false){const qty=Number(value);if(!cart[index])return;if(String(value).trim()===""||!Number.isFinite(qty)||qty<=0){if(final){cartError("Enter a quantity greater than zero.");drawCart()}return}cart[index].qty=qty;cartError("");updateCartLine(index)}
+function drawCart(){const sel=(m,v)=>m==v?" selected":"";$("#cartBox").innerHTML=cart.length?`<div class="tw"><table><thead><tr><th>Item</th><th>Price type</th><th>Qty</th><th>Rate</th><th>Total</th><th></th></tr></thead><tbody>${cart.map((i,x)=>{const p=P(i.pid),pr=i.price??(i.mode=="W"?p.wholesale:p.retail);return`<tr><td>${p.photo?`<img class="th" src="${p.photo}" alt="">`:""}${esc(i.name||p.name)}<small>${i.name&&!db.products.some(product=>product.id==i.pid)?"Product no longer in catalog · ":""}${stock(p.id)} pcs in stock</small></td><td><select onchange="setCartMode(${x},this.value)"><option value="R"${sel(i.mode,"R")}>Retail (Piece)</option><option value="W"${sel(i.mode,"W")}>Wholesale (Box)</option></select></td><td><input type="number" class="q" min="0.01" step="any" value="${i.qty}" oninput="setCartQty(${x},this.value)" onchange="setCartQty(${x},this.value,true)"></td><td>${money(pr)}</td><td><b id="cart-line-total-${x}">${money(pr*i.qty)}</b></td><td><button class="x" onclick="cart.splice(${x},1);drawCart()">✕</button></td></tr>`}).join("")}</tbody></table></div>`:`<p class="mu pad">Cart is empty. Search for a product above.</p>`;drawTot()}
 function drawTot(){const c=calc(cart,bo.disc,bo.dtype,bo.gst);$("#tot").innerHTML=`<div><span>Subtotal</span><span>${money(c.sub)}</span></div><div><span>Discount</span><span>− ${money(c.disc)}</span></div><div><span>Taxable amount</span><span>${money(c.taxable)}</span></div><div><span>GST (${bo.gst}%)</span><span>${money(c.gst)}</span></div><div class="fin"><span>Total payable</span><span>${money(c.total)}</span></div>`}
-function checkout(){const m=t=>{const e=$("#msg");e.textContent=t;e.style.color="var(--redt)"};if(!cart.length)return m("Add at least one item.");if(bo.pay=="Credit"&&!bo.cust)return m("Select a customer for a credit sale.");const need={};cart.forEach(i=>need[i.pid]=(need[i.pid]||0)+(i.mode=="W"?i.qty*P(i.pid).pack:i.qty));for(const id in need)if(need[id]>stock(id))return m("Not enough stock: "+P(id).name+" has only "+stock(id)+" pcs.");
- const s=mk(cart.map(i=>({...i})),{...bo,date:today()});db.sales.push(s);save();cart=[];bo.disc=0;bo.cust="";bo.pay="Cash";render();receipt(s)}
+function checkout(){
+ const m=t=>{const e=$("#msg");e.textContent=t;e.style.color="var(--redt)"},editing=editingSaleId&&db.sales.find(s=>s.id==editingSaleId);
+ if(editingSaleId&&!editing)return m("This invoice could not be found. Cancel editing and reopen it from Sales Log.");
+ if(!cart.length)return m("Add at least one item.");
+ if(bo.pay=="Credit"&&!db.customers.some(c=>c.id==bo.cust))return m("Select a valid customer for this credit sale.");
+ if(!Number.isFinite(+bo.disc)||+bo.disc<0||!Number.isFinite(+bo.gst)||+bo.gst<0)return m("Discount and GST must be zero or more.");
+ if(editingSaleId&&(!$("#saleDate").value||!(/^\d{4}-\d{2}-\d{2}$/.test($("#saleDate").value))))return m("Enter a valid invoice date.");
+ if(cart.some(i=>!Number.isFinite(+i.qty)||!(+i.qty>0)||!Number.isFinite(+(i.price??(i.mode=="W"?P(i.pid).wholesale:P(i.pid).retail)))||+(i.price??(i.mode=="W"?P(i.pid).wholesale:P(i.pid).retail))<0))return m("Check each item quantity and price.");
+ const subtotal=sum(cart,i=>i.qty*(i.price??(i.mode=="W"?P(i.pid).wholesale:P(i.pid).retail)));
+ if(bo.dtype=="%"&&+bo.disc>100)return m("Percentage discount must be between 0 and 100.");
+ if(bo.dtype!="%"&&+bo.disc>subtotal)return m("Discount cannot exceed the invoice subtotal.");
+ const need={},returned={};
+ cart.forEach(i=>need[i.pid]=(need[i.pid]||0)+(i.mode=="W"?i.qty*(i.pack??P(i.pid).pack):i.qty));
+ if(editing)editing.lines.forEach(line=>returned[line.pid]=(returned[line.pid]||0)+(Number(line.pcs)||(+line.qty||0)*(line.mode=="W"?P(line.pid).pack:1)));
+ for(const id in need){const available=stock(id)+(returned[id]||0),allowed=editing?Math.max(available,returned[id]||0):available;if(need[id]>allowed)return m("Not enough stock: "+P(id).name+" has only "+Math.max(0,allowed)+" pcs available for this invoice.")}
+ const date=editing?$("#saleDate").value:today(),s=mk(cart.map(i=>({...i})),{...bo,date});
+ if(editing){s.id=editing.id;s.soldAt=editing.soldAt;db.sales[db.sales.indexOf(editing)]=s;const returnPage=editingSaleReturnPage;editingSaleId=null;editingSaleDate="";cart=[];bo={cust:"",pay:"Cash",disc:0,dtype:"₹",gst:0};cur="billing";page=returnPage;pageByGroup.billing=page;save();render();receipt(s)}
+ else{s.soldAt=new Date().toISOString();db.sales.push(s);save();cart=[];bo.disc=0;bo.cust="";bo.pay="Cash";render();receipt(s)}
+}
 const dlg=h=>{$("#dlg").innerHTML=h;$("#dlg").showModal()},cls=`<button class="btn ghost" onclick="$('#dlg').close()">Close</button>`;
 let cropState=null;
 $("#dlg").addEventListener("close",()=>{if(cropState){const done=cropState.resolve;cropState=null;done(null)}});
@@ -422,25 +501,75 @@ function catStats(){const o={};db.sales.forEach(s=>s.lines.forEach(l=>{const n=s
 function dashView(){const rev=sum(db.sales,s=>s.taxable),cg=sum(db.sales,s=>sum(s.lines,l=>l.cogs)),ex=sum(db.expenses,e=>+e.amount),low=db.products.filter(p=>stock(p.id)<=p.min),L=(a,b,c)=>`<tr><td>${a}</td><td>${b}</td></tr>`;
 return`<h2>Dashboard &amp; Visual Analytics</h2>${kpis()}<div class="g2"><div class="card"><h3>Profit &amp; Loss (all time)</h3><div class="tw"><table><tbody>${L("Revenue (after discount)",money(rev))}${L("Cost of goods sold",money(cg))}${L("<b>Gross profit</b>",`<b>${money(rev-cg)}</b>`)}${L("Operating expenses",money(ex))}${L("<b>Net operating profit</b>",`<b>${money(rev-cg-ex)}</b>`)}${L("Customer dues (receivable)",money(sum(db.customers,c=>ccs(c)-crp(c))))}${L("Supplier payables",money(sum(db.suppliers,s=>spu(s)-spd(s))))}</tbody></table></div></div>
 <div class="card"><h3>Low-stock alerts</h3>${table([["Product",p=>esc(p.name)],["Stock",p=>stock(p.id)+" pcs"],["Min",p=>p.min]],low)}</div></div>
-<div class="g2"><div class="card"><h3>Gross profit by category</h3><div class="cv"><canvas id="c1"></canvas></div></div><div class="card"><h3>Payment method breakdown</h3><div class="cv"><canvas id="c2"></canvas></div></div></div><div class="card"><h3>Monthly revenue &amp; COGS</h3><div class="cv"><canvas id="c3"></canvas></div></div>`}
-function drawCharts(){if(!window.Chart)return;ch.forEach(c=>c.destroy());ch=[];const cs=getComputedStyle(document.documentElement);Chart.defaults.color=cs.getPropertyValue("--mu").trim();Chart.defaults.borderColor=cs.getPropertyValue("--bd").trim();
- const o={maintainAspectRatio:false},cat=catStats(),pay={Cash:0,UPI:0,Card:0,Credit:0},mo={};
- db.sales.forEach(s=>{pay[s.pay]=(pay[s.pay]||0)+s.total;const m=s.date.slice(0,7),x=mo[m]=mo[m]||{r:0,c:0};x.r+=s.taxable;x.c+=sum(s.lines,l=>l.cogs)});const ms=Object.keys(mo).sort();
+<div class="g2"><div class="card"><h3>Gross profit by category</h3><div class="cv"><canvas id="c1"></canvas></div></div><div class="card"><h3>Payment method breakdown</h3><div class="cv"><canvas id="c2"></canvas></div></div></div><div class="card"><h3>Sales Trend: Revenue &amp; Cost of Goods Sold</h3><p class="mu">Select a month, day, and hour to zoom from monthly totals down to daily, hourly, and minute sales.</p><div class="row"><button id="revenueZoomOut" class="btn ghost" type="button" onclick="zoomRevenueOut()" disabled>← Zoom out</button><button class="btn ghost" type="button" onclick="resetRevenueZoom()">Reset to months</button><span id="revenueZoomStatus" class="list-count">Monthly totals</span></div><div class="cv"><canvas id="c3"></canvas></div><p id="revenueZoomNote" class="mu" role="status"></p></div>`}
+let revenueChart=null;
+function revenueTimelineData(){
+ const sales=db.sales.filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s.date||""));
+ if(revenueChartView.level=="month"){
+  const totals=new Map();
+  sales.forEach(s=>{const key=s.date.slice(0,7),t=totals.get(key)||{revenue:0,cogs:0};t.revenue+=+s.taxable||0;t.cogs+=sum(s.lines||[],l=>+l.cogs||0);totals.set(key,t)});
+  const keys=[...totals.keys()].sort();
+  return{keys,labels:keys.map(key=>{const[y,m]=key.split("-").map(Number);return new Date(y,m-1,1).toLocaleDateString(undefined,{month:"short",year:"numeric"})}),totals:keys.map(key=>totals.get(key)),status:"Monthly totals",note:"Select a month to zoom into its daily totals."}
+ }
+ if(revenueChartView.level=="day"){
+  const[y,m]=revenueChartView.month.split("-").map(Number),days=new Date(y,m,0).getDate(),totals=Array.from({length:days},()=>({revenue:0,cogs:0})),keys=Array.from({length:days},(_,i)=>`${revenueChartView.month}-${String(i+1).padStart(2,"0")}`);
+  sales.filter(s=>s.date.startsWith(revenueChartView.month+"-")).forEach(s=>{const t=totals[Number(s.date.slice(8,10))-1];if(t){t.revenue+=+s.taxable||0;t.cogs+=sum(s.lines||[],l=>+l.cogs||0)}});
+  return{keys,labels:keys.map((_,i)=>String(i+1)),totals,status:`Daily totals · ${new Date(y,m-1,1).toLocaleDateString(undefined,{month:"long",year:"numeric"})}`,note:"Select a day to zoom into hourly totals."}
+ }
+ const daySales=sales.filter(s=>s.date==revenueChartView.day),timed=daySales.filter(s=>{if(!s.soldAt)return false;const at=new Date(s.soldAt);return Number.isFinite(at.getTime())&&`${at.getFullYear()}-${String(at.getMonth()+1).padStart(2,"0")}-${String(at.getDate()).padStart(2,"0")}`==s.date}),untimed=daySales.length-timed.length;
+ if(revenueChartView.level=="hour"){
+  const keys=Array.from({length:24},(_,hour)=>hour),totals=keys.map(()=>({revenue:0,cogs:0}));
+  timed.forEach(s=>{const t=totals[new Date(s.soldAt).getHours()];t.revenue+=+s.taxable||0;t.cogs+=sum(s.lines||[],l=>+l.cogs||0)});
+  return{keys,labels:keys.map(hour=>`${String(hour).padStart(2,"0")}:00`),totals,status:`Hourly totals · ${revenueChartView.day}`,note:timed.length?`${untimed?`${untimed} invoice(s) without recorded time are excluded. `:""}Select an hour to zoom into its minute-by-minute totals.`:`No sales with recorded timestamps on this day. Existing invoices without a saved time cannot be accurately split by hour.`}
+ }
+ const keys=Array.from({length:60},(_,minute)=>minute),totals=keys.map(()=>({revenue:0,cogs:0})),hour=Number(revenueChartView.hour),hourSales=timed.filter(s=>new Date(s.soldAt).getHours()==hour);
+ hourSales.forEach(s=>{const t=totals[new Date(s.soldAt).getMinutes()];t.revenue+=+s.taxable||0;t.cogs+=sum(s.lines||[],l=>+l.cogs||0)});
+ return{keys,labels:keys.map(minute=>`${String(hour).padStart(2,"0")}:${String(minute).padStart(2,"0")}`),totals,status:`Minute totals · ${revenueChartView.day} · ${String(hour).padStart(2,"0")}:00`,note:hourSales.length?`${untimed?`${untimed} invoice(s) without recorded time are excluded. `:""}Minute totals are grouped by device local time; this is the finest available resolution.`:`No sales with recorded timestamps in this hour.`}
+}
+function updateRevenueZoomControls(){
+ const data=revenueTimelineData(),status=$("#revenueZoomStatus"),back=$("#revenueZoomOut"),note=$("#revenueZoomNote");
+ if(status)status.textContent=data.status;
+ if(back)back.disabled=revenueChartView.level=="month";
+ if(note)note.textContent=data.note;
+}
+function renderRevenueTimeline(){
+ const canvas=$("#c3");if(!canvas||!window.Chart)return;
+ const timeline=revenueTimelineData();
+ const labels=timeline.labels,data=timeline.totals.map(t=>+t.revenue.toFixed(2)),costs=timeline.totals.map(t=>+t.cogs.toFixed(2));
+ if(revenueChart){
+  revenueChart.data.labels=labels;revenueChart.data.datasets[0].data=data;revenueChart.data.datasets[1].data=costs;
+  updateRevenueZoomControls();revenueChart.update("none");return
+ }
+ revenueChart=new Chart(canvas,{type:"line",data:{labels,datasets:[{label:"Revenue",data,borderColor:"#3b6db3",backgroundColor:"#3b6db3",pointRadius:3,pointHitRadius:12,tension:.25},{label:"COGS",data:costs,borderColor:"#f59e0b",backgroundColor:"#f59e0b",pointRadius:3,pointHitRadius:12,tension:.25}]},options:{maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},onClick:(event,elements)=>{if(!elements.length)return;const current=revenueTimelineData(),key=current.keys[elements[0].index];if(revenueChartView.level=="month"){revenueChartView.month=key;revenueChartView.level="day"}else if(revenueChartView.level=="day"){revenueChartView.day=key;revenueChartView.level="hour"}else if(revenueChartView.level=="hour"){revenueChartView.hour=key;revenueChartView.level="minute"}else return;updateRevenueZoomControls();requestAnimationFrame(renderRevenueTimeline)}}});
+ ch.push(revenueChart);updateRevenueZoomControls()
+}
+function zoomRevenueOut(){
+ if(revenueChartView.level=="minute"){revenueChartView.level="hour";revenueChartView.hour=""}
+ else if(revenueChartView.level=="hour"){revenueChartView.level="day";revenueChartView.day="";revenueChartView.hour=""}
+ else if(revenueChartView.level=="day"){revenueChartView.level="month";revenueChartView.month="";revenueChartView.day="";revenueChartView.hour=""}
+ else return;
+ renderRevenueTimeline()
+}
+function resetRevenueZoom(){revenueChartView.level="month";revenueChartView.month="";revenueChartView.day="";revenueChartView.hour="";renderRevenueTimeline()}
+function drawCharts(){if(!window.Chart){const note=$("#revenueZoomNote");if(note)note.textContent=window.__kiranaChartUnavailable?"Charts are not cached yet. Connect to the internet once, then reopen the dashboard to enable offline charts.":"The chart library could not be loaded. Reconnect and reload the dashboard.";return}ch.forEach(c=>c.destroy());ch=[];revenueChart=null;const cs=getComputedStyle(document.documentElement);Chart.defaults.color=cs.getPropertyValue("--mu").trim();Chart.defaults.borderColor=cs.getPropertyValue("--bd").trim();
+ const o={maintainAspectRatio:false},cat=catStats(),pay={Cash:0,UPI:0,Card:0,Credit:0};
+ db.sales.forEach(s=>{pay[s.pay]=(pay[s.pay]||0)+s.total});
  ch.push(new Chart($("#c1"),{type:"bar",data:{labels:Object.keys(cat),datasets:[{label:"Gross profit ₹",data:Object.values(cat).map(v=>+v.profit.toFixed(2)),backgroundColor:"#3b6db3",borderRadius:6}]},options:{...o,plugins:{legend:{display:false}}}}));
  ch.push(new Chart($("#c2"),{type:"doughnut",data:{labels:Object.keys(pay),datasets:[{data:Object.values(pay).map(v=>+v.toFixed(2)),backgroundColor:["#3b6db3","#16a34a","#f59e0b","#dc2626"],borderWidth:0}]},options:{...o,cutout:"62%"}}));
- ch.push(new Chart($("#c3"),{type:"line",data:{labels:ms,datasets:[{label:"Revenue",data:ms.map(m=>+mo[m].r.toFixed(2)),borderColor:"#3b6db3",tension:.3},{label:"COGS",data:ms.map(m=>+mo[m].c.toFixed(2)),borderColor:"#f59e0b",tension:.3}]},options:o}))}
+ renderRevenueTimeline()
+}
 function profileView(){
  const p=db.storeProfile||{},logo=p.logo||"";
  return`<h2>Store Profile</h2><p class="mu">Set the business details used across the app and on customer invoices.</p>
  <form class="card" onsubmit="return saveProfile(event)"><div class="fg">
- <label>Store name<input name="name" value="${esc(p.name||db.shop||"")}" placeholder="e.g. Shree Ganesh Kirana" required></label>
- <label>Owner / manager<input name="owner" value="${esc(p.owner||"")}" placeholder="Full name"></label>
+ <label>Store name<input name="name" lang="und" value="${esc(p.name||db.shop||"")}" placeholder="e.g. Shree Ganesh Kirana" required></label>
+ <label>Owner / manager<input name="owner" lang="und" value="${esc(p.owner||"")}" placeholder="Full name"></label>
  <label>Phone<input name="phone" type="tel" value="${esc(p.phone||"")}" placeholder="Business phone"></label>
- <label>Email<input name="email" type="email" value="${esc(p.email||"")}" placeholder="name@example.com"></label>
- <label>GSTIN<input name="gstin" value="${esc(p.gstin||"")}" placeholder="GST registration number"></label>
- <label>UPI ID<input name="upi" value="${esc(p.upi||"")}" placeholder="store@upi"></label>
- <label style="grid-column:1/-1">Store address<textarea name="address" rows="2" placeholder="Street, area, city, state, PIN code">${esc(p.address||"")}</textarea></label>
- <label style="grid-column:1/-1">Invoice footer / thank-you note<input name="footer" value="${esc(p.footer||"")}" placeholder="Thank you! Visit again."></label>
+ <label>Email<input name="email" type="email" lang="und" value="${esc(p.email||"")}" placeholder="name@example.com"></label>
+ <label>GSTIN<input name="gstin" lang="und" value="${esc(p.gstin||"")}" placeholder="GST registration number"></label>
+ <label>UPI ID<input name="upi" lang="und" value="${esc(p.upi||"")}" placeholder="store@upi"></label>
+ <label style="grid-column:1/-1">Store address<textarea name="address" lang="und" rows="2" placeholder="Street, area, city, state, PIN code">${esc(p.address||"")}</textarea></label>
+ <label style="grid-column:1/-1">Invoice footer / thank-you note<input name="footer" lang="und" value="${esc(p.footer||"")}" placeholder="Thank you! Visit again."></label>
  <label>Store logo<input name="logo" type="file" accept="image/*"><small class="mu">Selecting a logo opens the crop and rotate editor.</small></label>
  ${logo?`<div><span class="mu">Current logo</span><br><img src="${logo}" alt="Store logo" style="width:76px;height:76px;object-fit:contain;border-radius:10px;background:var(--calc);margin-top:6px"><br><button type="button" class="x" onclick="editStoreLogo()">✂️ Edit crop</button></div>`:""}
  </div><div class="row"><button class="btn">Save store profile</button></div></form>`;
@@ -453,15 +582,21 @@ async function saveProfile(e){
 }
 async function editStoreLogo(){const p=db.storeProfile||{};if(!p.logo)return;const original=p.logoOriginal||p.logo,logo=await cropImage(original);if(logo){p.logo=logo;p.logoOriginal=original;db.storeProfile=p;save();render()}}
 function reportsView(){const c=catStats();return`<h2>Reports &amp; Category Performance</h2><div class="card">${table([["Category",r=>esc(r[0])],["Revenue",r=>money(r[1].rev)],["COGS",r=>money(r[1].cogs)],["Gross profit",r=>`<b>${money(r[1].profit)}</b>`],["Margin",r=>(r[1].rev?r[1].profit/r[1].rev*100:0).toFixed(1)+"%"]],Object.entries(c))}</div>
-<div class="card"><h3>Shop details</h3><label>Shop name on receipts<input value="${esc(db.shop||"")}" placeholder="Kirana Store" onchange="db.shop=this.value.trim();db.storeProfile.name=db.shop;save();render()"></label></div><div class="card"><h3>Data tools</h3><div class="row" style="flex-wrap:wrap"><button class="btn" onclick="exp('sales')">📄 Sales CSV</button><button class="btn" onclick="exp('cust')">📄 Customer balances CSV</button><button class="btn" onclick="exp('json')">💾 Backup JSON</button><button class="btn ghost" onclick="imp()">📥 Import backup</button><button class="btn ghost" onclick="wipe(this)">Clear all data</button></div></div>`}
+<div class="card"><h3>Shop details</h3><label>Shop name on receipts<input lang="und" value="${esc(db.shop||"")}" placeholder="Kirana Store" onchange="db.shop=this.value.trim();db.storeProfile.name=db.shop;save();render()"></label></div><div class="card"><h3>Data tools</h3><div class="row" style="flex-wrap:wrap"><button class="btn" onclick="exp('sales')">📄 Sales CSV</button><button class="btn" onclick="exp('cust')">📄 Customer balances CSV</button><button class="btn" onclick="exp('json')">💾 Backup JSON</button><button class="btn ghost" onclick="imp()">📥 Import backup</button><button class="btn ghost" onclick="wipe(this)">Clear all data</button></div></div>`}
 function wipe(b){if(!b.dataset.s){b.dataset.s=1;b.textContent="Tap again to confirm";return}db={};fix();save();render()}
 const csv=a=>a.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
 function exp(k){let t,x;if(k=="json"){t="Backup JSON";x=JSON.stringify(db)}else if(k=="sales"){t="Sales CSV";x=csv([["Invoice","Date","Customer","Payment","Subtotal","Discount","GST","Total","Profit"],...db.sales.map(s=>[s.id,s.date,cn(s.cust),s.pay,s.sub,s.disc,s.gst,s.total,profit(s)])])}else{t="Customer balances CSV";x=csv([["ID","Name","Phone","Credit sales","Repaid","Balance"],...db.customers.map(c=>[c.id,c.name,c.phone,ccs(c),crp(c),ccs(c)-crp(c)])])}
  dlg(`<h3>${t}</h3><p class="mu">Copy this text and paste it into a file (${k=="json"?".json":".csv, opens in Excel"}).</p><textarea id="ta" readonly rows="10">${esc(x)}</textarea><div class="row"><button class="btn" onclick="cp()">Copy</button>${cls}</div>`)}
 function cp(){const a=$("#ta");a.select();try{navigator.clipboard.writeText(a.value)}catch(e){document.execCommand("copy")}}
-function imp(){dlg(`<h3>Import data</h3><p class="mu">Choose a backup file or paste its JSON. This replaces current data.</p><input type="file" accept=".json,application/json" onchange="rd(this)"><textarea id="ta" rows="8" placeholder="Paste backup JSON here"></textarea><div class="row"><button class="btn" onclick="doImp()">Restore</button>${cls}</div><p id="im" class="mu"></p>`)}
+function imp(){dlg(`<h3>Import data</h3><p class="mu">Choose a backup file or paste its JSON. This replaces current data.</p><input type="file" accept=".json,application/json" onchange="rd(this)"><textarea id="ta" lang="und" rows="8" placeholder="Paste backup JSON here"></textarea><div class="row"><button class="btn" onclick="doImp()">Restore</button>${cls}</div><p id="im" class="mu"></p>`)}
 function rd(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>$("#ta").value=r.result;r.readAsText(f)}
-function doImp(){try{const d=JSON.parse($("#ta").value);if(!d.products||!d.sales)throw 0;db=d;fix();save();$("#dlg").close();render()}catch(e){$("#im").textContent="That does not look like a valid backup."}}
+function doImp(){
+ try{
+  const imported=parseSavedData($("#ta").value);
+  if(!Array.isArray(imported.sales))throw new Error("The backup is missing its sales records.");
+  fix(imported);db=imported;save();$("#dlg").close();render()
+ }catch(e){$("#im").textContent="Import failed: "+(e.message||"invalid backup")}
+}
 const NAV=[
  {id:"billing",label:"🧾 Billing & Sales",pages:[["billing","Easy Billing"],["sales","Sales Log"]]},
  {id:"inventory",label:"📦 Inventory",pages:[["products","Product Master"],["adjustments","Stock Adjustments"]]},
@@ -474,9 +609,27 @@ const PAGE_GROUP=Object.fromEntries(NAV.flatMap(group=>group.pages.map(([id])=>[
 const V={billing:billingView,dash:dashView,profile:profileView,reports:reportsView};KS.forEach(k=>{if(T[k])V[k]=()=>logView(k)});
 function go(id){const group=NAV.find(n=>n.id==id);if(!group)return;cur=id;page=pageByGroup[cur]||group.pages[0][0];save();render();scrollTo(0,0)}
 function showPage(id){if(PAGE_GROUP[id]!=cur)return;page=id;pageByGroup[cur]=id;save();render()}
+function toggleMobileMenu(open){
+ const menu=$("#mobileMenu"),toggle=$("#mobileMenuToggle"),isOpen=open===undefined?menu.hidden:open;
+ menu.hidden=!isOpen;toggle.setAttribute("aria-expanded",String(isOpen));toggle.setAttribute("aria-label",isOpen?"Close navigation menu":"Open navigation menu");
+ if(isOpen){const active=menu.querySelector('[aria-current="page"]');(active||menu.querySelector(".mobile-menu-close")).focus()}
+ else toggle.focus()
+}
+function mobileGo(groupId,pageId){
+ const group=NAV.find(n=>n.id==groupId);if(!group||!group.pages.some(([id])=>id==pageId))return;
+ cur=groupId;page=pageId;pageByGroup[cur]=page;toggleMobileMenu(false);save();render();scrollTo(0,0)
+}
+document.addEventListener("keydown",event=>{
+ if(event.key=="Escape"&&!$("#mobileMenu").hidden){toggleMobileMenu(false);return}
+ if(event.key!="Tab"||$("#mobileMenu").hidden)return;
+ const menu=$("#mobileMenu"),focusable=[...menu.querySelectorAll("button")],first=focusable[0],last=focusable[focusable.length-1];
+ if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+ else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+});
 function render(){
  $("#appTitle").textContent="🛒 "+storeName();document.title=storeName()+" · POS";
  $("#nav").innerHTML=NAV.map(n=>`<button class="${n.id==cur?"on":""}" aria-current="${n.id==cur?"page":"false"}" onclick="go('${n.id}')">${n.label}</button>`).join("");
+ $("#mobileMenuItems").innerHTML=NAV.map(group=>`<section class="mobile-menu-group"><h3>${group.label}</h3>${group.pages.map(([id,label])=>`<button type="button" aria-current="${id==page?"page":"false"}" onclick="mobileGo('${group.id}','${id}')">${label}</button>`).join("")}</section>`).join("");
  const group=NAV.find(n=>n.id==cur)||NAV[0];
  if(!group.pages.some(([id])=>id==page))page=group.pages[0][0];
  $("#subnav").innerHTML=group.pages.length>1?group.pages.map(([id,label])=>`<button class="${id==page?"on":""}" aria-current="${id==page?"page":"false"}" onclick="showPage('${id}')">${label}</button>`).join(""):"";
@@ -486,7 +639,7 @@ function render(){
  if(T[page])renderList(page)
 }
 async function startApp(){
- await load();
+ try{await load()}catch(e){console.error("App startup stopped to protect saved device data",e);storageStatus("Saved data could not be loaded; it was not replaced",true);$("#main").innerHTML='<div class="card"><h2>Saved data needs attention</h2><p>Your device data could not be read safely, so the app did not create demo data or overwrite it.</p><p class="mu">If you have a JSON backup, use Import to restore it. Do not clear this site’s browser data.</p><button class="btn" type="button" onclick="imp()">Import a backup</button></div>';return}
  if(db.ui&&db.ui.listState)Object.assign(listState,db.ui.listState);
  if(db.ui&&db.ui.pageByGroup)pageByGroup={...db.ui.pageByGroup};
  if(db.ui&&PAGE_GROUP[db.ui.currentTab]){page=db.ui.currentTab;cur=db.ui.currentGroup==PAGE_GROUP[page]?db.ui.currentGroup:PAGE_GROUP[page];pageByGroup[cur]=page}

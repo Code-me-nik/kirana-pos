@@ -16,9 +16,9 @@ Kirana POS runs in your web browser and can be installed on a computer or phone 
 | Area | Features |
 | --- | --- |
 | 🧾 **Billing** | Create sales invoices and record payments. |
-| 📦 **Inventory** | Track products, purchases, and stock adjustments. |
+| 📦 **Inventory** | Track products, purchases, and stock adjustments. Enter opening stock in boxes and loose units, then quickly add received stock from a product row. |
 | 👥 **Store accounts** | Manage customer balances, suppliers, and payments. |
-| 📊 **Reports** | Review sales, expenses, and business summaries. |
+| 📊 **Reports** | Review sales, expenses, and business summaries. Drill the dashboard revenue and COGS chart from monthly totals into daily, hourly, and minute sales. |
 
 ## Get started
 
@@ -135,14 +135,19 @@ The app's web manifest and service worker use relative paths, so the website als
 
 ## Use the app offline
 
-Open the published app once while connected to the internet. The browser then saves the app shell so it can reopen when you are offline. Some features that depend on internet-loaded resources, such as charts, may not be available without a connection.
+Open the published app once while connected to the internet, using its HTTPS website, and wait for the page to finish loading. The browser saves the app shell and makes a best-effort attempt to cache the dashboard chart library for offline use. The first visit must be online; direct `file://` opening does not install a service worker. If the chart library could not be cached during installation, open the dashboard once while online and reload the app before going offline. Business records remain stored locally in the same browser.
 
 ## Important: where your business data is stored
 
 - Products, sales, and other records are saved **in the browser on the device where you use the app**.
+- The dashboard can show hourly and minute sales only for invoices recorded after sale-time tracking was added. Older invoices do not include a time, so they remain in monthly and daily totals but are not assigned to invented time buckets.
+- Publishing or installing an app update does **not** reset those records. They remain in the same browser as long as you reopen the same app website.
 - Your records are **not uploaded to GitHub**, sent to a server, or automatically synchronized to other devices.
 - Clearing the browser's site data or losing the device can remove your records.
 - Select **Backup** in the app regularly and save the exported JSON backup somewhere safe. Use **Import** to restore a backup.
+- The app does not encrypt records with a separate password. Protect access to the device and browser, and do not share the device with people who should not see the business records.
+- Customers and suppliers with linked invoices, purchases, or payments cannot be deleted, so their financial history and balances remain accessible.
+- Importing a backup replaces the current records, and **Clear all data** deletes them. Use either only when you intend to replace or remove your data.
 
 ## Troubleshooting
 
@@ -152,6 +157,7 @@ Open the published app once while connected to the internet. The browser then sa
 | No install option appears | Open the HTTPS website in Chrome, Edge, or Safari on iPhone/iPad; then reload while online. |
 | The app does not open offline | Visit it once while online, then try again. The first visit is needed to cache the app shell. |
 | Your data is missing on another device | Data is stored separately in each browser. Restore a backup on the other device if you have one. |
+| Android keyboard language is not reflected in a text field | Choose the language on your Android keyboard; text fields accept Unicode input and do not force the app's interface language. Numeric fields only accept numbers. |
 
 ## For developers
 
@@ -161,3 +167,5 @@ This project is a static website; it has no build step or package installation. 
 - `manifest.webmanifest` — the installable app's name, appearance, and icons.
 - `service-worker.js` — offline app-shell caching.
 - `.github/workflows/pages.yml` — automated GitHub Pages deployment.
+
+The app's records are stored separately from the service-worker cache. When changing the IndexedDB database name or data key in `index.html`, add a migration that copies existing records before removing or replacing any old storage.
