@@ -37,13 +37,16 @@ If the repository owner has enabled GitHub Pages, open the live app link they sh
 Opening the file directly is useful for trying the app, but installing it and using it offline require a secure website address (HTTPS) or a local web server. The published GitHub Pages website uses HTTPS.
 
 ## Install the app
+click here to download and install the app 
+
+[app to download link ](#https://code-me-nik.github.io/kirana-pos/)
 
 First, open the app's **HTTPS website** in the browser you want to use. The exact menu wording can vary slightly by browser version.
 
 <details>
   <summary><strong>Chrome on a computer</strong></summary>
 
-1. Open the [app](#https://code-me-nik.github.io/kirana-pos/). in Chrome.
+1. Open the app in Chrome.
 2. Select **Install app** in the app header if it is shown. Otherwise, open the **⋮** menu and choose **Install page as app** or **Save and share → Install page as app**.
 3. Confirm by selecting **Install**.
 4. Open Kirana POS from your desktop, app launcher, or Chrome apps.
