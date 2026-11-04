@@ -1,0 +1,504 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B365D">
+<meta name="description" content="Kirana store billing, inventory, customer ledger, and sales management.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Kirana POS</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--navy:#1B365D;--slate:#2C3E50;--bg:#F1F5F9;--card:#fff;--fill:#F8FAFC;--calc:#F1F5F9;--ok:#D4EFDF;--okt:#14532d;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--red:#fee2e2;--redt:#991b1b;--amb:#fef3c7;--ambt:#92400e;--on:#1B365D;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#111a2b;--fill:#16213a;--calc:#1a2640;--ok:#14532d;--okt:#bbf7d0;--tx:#e5eaf3;--mu:#94a3b8;--bd:#24324d;--red:#450a0a;--redt:#fecaca;--amb:#451a03;--ambt:#fde68a;--on:#2b5a9e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#111a2b;--fill:#16213a;--calc:#1a2640;--ok:#14532d;--okt:#bbf7d0;--tx:#e5eaf3;--mu:#94a3b8;--bd:#24324d;--red:#450a0a;--redt:#fecaca;--amb:#451a03;--ambt:#fde68a;--on:#2b5a9e;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 "Segoe UI",Inter,system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:30}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--navy);color:#fff;display:flex;align-items:center;gap:8px;padding:10px 16px}
+header h1{font-size:17px;margin:0;flex:1;white-space:nowrap}
+.hb{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:7px 12px;font:inherit;cursor:pointer}
+#storageStatus{font-size:11px;white-space:nowrap;opacity:.9}.storage-error{color:#fecaca!important}
+.app{display:flex;align-items:flex-start}
+#nav{width:204px;flex:none;position:sticky;top:calc(env(safe-area-inset-top,0px) + 50px);padding:12px;display:flex;flex-direction:column;gap:2px}
+#subnav{display:flex;gap:6px;overflow-x:auto;padding:0 2px 10px;margin-bottom:12px;border-bottom:1px solid var(--bd)}
+#subnav:empty{display:none}
+#subnav button{white-space:nowrap;background:var(--card);border:1px solid var(--bd);color:var(--tx);padding:7px 12px;border-radius:999px;font:inherit;cursor:pointer}
+#subnav button.on{background:var(--on);border-color:var(--on);color:#fff;font-weight:600}
+nav button{text-align:left;background:none;border:0;color:var(--tx);padding:10px 12px;border-radius:9px;font:inherit;cursor:pointer}
+nav button:hover{background:var(--card)}nav button.on{background:var(--on);color:#fff;font-weight:600}
+main{flex:1;min-width:0;padding:16px}
+h2{margin:0 0 12px;font-size:20px;color:var(--tx)}h3{margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+label{display:block;font-size:12px;color:var(--mu);font-weight:600}
+input,select,textarea{width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--fill);color:var(--tx);font:inherit;font-size:16px}
+textarea{font-size:13px;font-family:monospace}
+.btn{background:var(--on);color:#fff;border:0;border-radius:9px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+.btn.ghost{background:var(--calc);color:var(--tx)}.btn.big{width:100%;padding:14px;font-size:16px;margin-top:10px}
+button,.x{transition:transform .16s ease,filter .16s ease,background-color .16s ease,box-shadow .16s ease}
+button:hover{filter:brightness(1.08);box-shadow:0 3px 10px rgba(15,23,42,.12)}
+button:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}
+.card,.k{transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{box-shadow:0 5px 18px rgba(15,23,42,.06)}
+#main>*{animation:riseIn .22s ease both}
+@keyframes riseIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.crop-wrap{margin-top:12px;background:#0f172a;border-radius:12px;padding:10px;overflow:hidden}
+#cropCanvas{display:block;width:100%;height:auto;max-height:55vh;object-fit:contain;touch-action:none;cursor:crosshair}
+.crop-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.crop-help{font-size:12px;color:var(--mu);margin:8px 0 0}
+.list-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.list-menu{display:none;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:12px;background:var(--fill);border:1px solid var(--bd);border-radius:10px;margin-bottom:12px}
+.list-menu.open{display:grid}
+.list-count{font-size:12px;color:var(--mu);margin-left:auto}
+.select-col{width:38px;text-align:center}.select-col input{width:auto;margin:0}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+.x{background:none;border:1px solid var(--bd);border-radius:7px;color:var(--mu);cursor:pointer;padding:4px 8px;font:inherit}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{background:var(--navy);color:#fff;text-align:left;padding:9px 10px;font-size:12px;position:sticky;top:0}
+td{padding:9px 10px;border-bottom:1px solid var(--bd)}td small{display:block;color:var(--mu);font-size:11px}
+th:first-child,td:first-child{position:sticky;left:0;background:var(--card);z-index:1}th:first-child{background:var(--navy);z-index:2}
+td input,td select{margin:0;padding:6px 8px;font-size:14px}td input.q{width:80px}
+.b{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700}
+.b.g{background:var(--ok);color:var(--okt)}.b.r{background:var(--red);color:var(--redt)}.b.a{background:var(--amb);color:var(--ambt)}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px}
+.k{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}.k span{display:block;color:var(--mu);font-size:12px;font-weight:600}.k b{font-size:22px}
+.k.g{background:var(--ok);color:var(--okt)}.k.r{background:var(--red);color:var(--redt)}.k.g span,.k.r span{color:inherit}
+.pos{display:grid;grid-template-columns:1.6fr 1fr;gap:14px}.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.srch{position:relative;margin-bottom:12px}
+.sg{position:absolute;left:0;right:0;top:100%;background:var(--card);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);z-index:15;max-height:300px;overflow:auto}
+.sg button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--bd);padding:10px 12px;color:var(--tx);font:inherit;cursor:pointer}.sg small{display:block;color:var(--mu)}
+.tot div{display:flex;justify-content:space-between;padding:6px 10px;background:var(--calc);border-radius:7px;margin-top:6px}
+.tot div.fin{background:var(--ok);color:var(--okt);font-weight:700;font-size:18px}
+.mu{color:var(--mu)}.pad{padding:10px}.row{display:flex;gap:8px;margin-top:12px}.cv{position:relative;height:280px}
+dialog{border:0;border-radius:14px;width:min(540px,94vw);background:var(--card);color:var(--tx);padding:18px}dialog::backdrop{background:rgba(0,0,0,.5)}
+@media(max-width:899px){.app{flex-direction:column}#nav{width:100%;position:sticky;top:calc(env(safe-area-inset-top,0px) + 50px);flex-direction:row;overflow-x:auto;background:var(--card);padding:8px;border-bottom:1px solid var(--bd);z-index:10}#nav button{white-space:nowrap}main{width:100%;padding:12px}.pos,.g2{grid-template-columns:1fr}}
+.ph{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:120px}.pi{background:var(--calc);border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--mu);font-size:10px;text-align:center}.pi img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}.ph input[type=range]{width:110px;padding:0;margin:0}.th{float:left;width:36px;height:36px;object-fit:cover;border-radius:8px;margin-right:10px}
+@page{margin:6mm}
+@media print{:root:root:root{--card:#fff;--tx:#000;--mu:#333;--bd:#bbb;--calc:#fff;--ok:#fff;--okt:#000;--navy:#000;--on:#000;color-scheme:light;padding:0}body::before,header,.app,dialog .np,dialog button{display:none!important}body{background:#fff}dialog[open]{position:static;display:block;width:80mm;max-width:100%;max-height:none;overflow:visible;margin:0;padding:0;border:0;box-shadow:none;background:#fff;color:#000}dialog .tw{overflow:visible}dialog table{white-space:normal;font-size:12px}dialog th{background:#fff;color:#000;border-bottom:1px solid #000;position:static}dialog td:first-child,dialog th:first-child{position:static;background:#fff}.tot div{background:none;padding:3px 0;border-top:1px dashed #999}.tot div.fin{font-size:15px;border-top:2px solid #000}}
+</style></head><body>
+<header><h1 id="appTitle">🛒 Kirana POS</h1><span id="storageStatus" role="status" aria-live="polite">Checking local storage…</span><button id="installAppBtn" class="hb" hidden>Install app</button><button class="hb" onclick="exp('json')">💾 Backup</button><button class="hb" onclick="imp()">📥 Import</button></header>
+<div class="app"><nav id="nav" aria-label="Main sections"></nav><main><div id="subnav" aria-label="Section pages"></div><section id="main"></section></main></div><dialog id="dlg"></dialog>
+<script>
+const $=s=>document.querySelector(s),sum=(a,f)=>a.reduce((x,y)=>x+f(y),0);
+const money=n=>"₹"+(+n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
+const ago=d=>new Date(Date.now()-d*864e5-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10),today=()=>ago(0);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEY="kirana_pos_v1",FALLBACK_KEY=KEY+"_fallback",KS=["products","customers","suppliers","purchases","sales","expenses","payments","adjustments"];
+let db,cart=[],cur="billing",page="billing",pageByGroup={},bo={cust:"",pay:"Cash",disc:0,dtype:"₹",gst:0},ch=[];
+const P=id=>db.products.find(p=>p.id==id)||{name:"(deleted)",pack:1,costPc:0,retail:0,wholesale:0,cat:"—",min:0,open:0};
+const cn=id=>id?(db.customers.find(c=>c.id==id)||{name:"(deleted)"}).name:"Walk-in";
+const sn=id=>(db.suppliers.find(c=>c.id==id)||{name:"(deleted)"}).name;
+const badge=(t,c)=>`<span class="b ${c}">${t}</span>`;
+const stock=id=>{const p=P(id);return(+p.open)+sum(db.purchases.filter(x=>x.pid==id),x=>x.pcs)-sum(db.sales,s=>sum(s.lines.filter(l=>l.pid==id),l=>l.pcs))+sum(db.adjustments.filter(x=>x.pid==id),x=>x.pcs)};
+const ccs=c=>sum(db.sales.filter(s=>s.cust==c.id&&s.pay=="Credit"),s=>s.total),crp=c=>sum(db.payments.filter(p=>p.type=="Customer Payment"&&p.party==c.id),p=>+p.amount);
+const spu=s=>sum(db.purchases.filter(p=>p.sup==s.id),p=>+p.amount),spd=s=>sum(db.payments.filter(p=>p.type=="Supplier Payment"&&p.party==s.id),p=>+p.amount);
+const profit=s=>s.taxable-sum(s.lines,l=>l.cogs);
+const nextId=(k,pre)=>pre+(1+Math.max(1000,...db[k].map(r=>parseInt(String(r.id).split("-")[1])||0)));
+function calc(items,disc,dtype,gst){const lines=items.map(i=>{const p=P(i.pid),W=i.mode=="W",pcs=W?i.qty*p.pack:i.qty,price=W?p.wholesale:p.retail;return{pid:i.pid,name:p.name,cat:p.cat,qty:i.qty,mode:i.mode,price,pcs,total:i.qty*price,cogs:pcs*p.costPc}});
+ const sub=sum(lines,l=>l.total),d=Math.min(sub,dtype=="%"?sub*disc/100:disc),tax=sub-d,g=tax*gst/100;return{lines,sub,disc:d,taxable:tax,gst:g,total:tax+g}}
+function mk(items,o){return{...calc(items,o.disc,o.dtype,o.gst),id:nextId("sales","INV-"),date:o.date,cust:o.cust,pay:o.pay,rate:o.gst}}
+function seed(){const pr=[["Aashirvad Atta 5kg","Staples","Aashirvad","8901725001",4,240,265,1000,40,10],["Tata Salt 1kg","Staples","Tata","8904043901",25,24,28,650,100,30],["Fortune Sunflower Oil 1L","Oils","Fortune","8906007201",12,128,145,1680,60,15],["Parle-G Biscuit 100g","Snacks","Parle","8901719101",48,8.5,10,470,200,50],["Maggi Noodles 70g","Snacks","Nestle","8901058801",48,12,14,640,150,40],["Surf Excel 1kg","Household","HUL","8901030801",10,190,215,2050,30,8],["Tata Tea Gold 250g","Beverages","Tata","8904043501",20,125,140,2700,45,10],["Amul Butter 100g","Dairy","Amul","8901262101",40,52,58,2250,20,25]].map((a,i)=>({id:"PRD-"+(1001+i),name:a[0],cat:a[1],brand:a[2],barcode:a[3],unit:"Pcs",pack:a[4],costPc:a[5],retail:a[6],wholesale:a[7],open:a[8],min:a[9]}));
+ db={products:pr,customers:[["Ramesh Patil","9822000001"],["Sunita Devi","9822000002"],["Kiran Stores","9822000003"]].map((a,i)=>({id:"CUS-"+(1001+i),name:a[0],phone:a[1],address:"Main Road"})),suppliers:[{id:"SUP-1001",name:"Shree Traders",contact:"Mahesh",phone:"9811000001"},{id:"SUP-1002",name:"Patel Wholesale",contact:"Jayesh",phone:"9811000002"}],purchases:[],sales:[],expenses:[],payments:[],adjustments:[]};
+ pr.slice(0,7).forEach((p,i)=>db.purchases.push({id:"PUR-"+(1001+i),date:ago(70),sup:db.suppliers[i%2].id,pid:p.id,qty:3,unit:"Box",pcs:3*p.pack,amount:3*p.pack*p.costPc}));
+ let s=7;const r=()=>(s=s*16807%2147483647)/2147483647;
+ for(let i=0;i<45;i++){const items=[];for(let j=0,n=1+Math.floor(r()*3);j<n;j++){const w=r()<.2;items.push({pid:pr[Math.floor(r()*8)].id,qty:w?1:1+Math.floor(r()*4),mode:w?"W":"R"})}
+  const pay=["Cash","UPI","Card","Credit"][Math.floor(r()*4)];db.sales.push(mk(items,{date:ago(Math.floor(r()*110)),cust:pay=="Credit"?db.customers[Math.floor(r()*3)].id:"",pay,disc:r()<.3?10:0,dtype:"₹",gst:r()<.3?5:0}))}
+ db.payments.push({id:"PAY-1001",date:ago(20),type:"Customer Payment",party:"CUS-1001",mode:"Cash",amount:300},{id:"PAY-1002",date:ago(30),type:"Supplier Payment",party:"SUP-1001",mode:"UPI",amount:5000});
+ [["Rent",8000],["Electricity",1800],["Wages",6000],["Freight",900],["Refreshments",350]].forEach((e,i)=>db.expenses.push({id:"EXP-"+(1001+i),date:ago(5+i*3),cat:e[0],amount:e[1],note:""}))}
+function fix(){KS.forEach(k=>db[k]=db[k]||[]);db.storeProfile=db.storeProfile||{}}
+const storeName=()=>String(db.storeProfile.name||db.shop||"Kirana POS").trim()||"Kirana POS";
+let storageDb=null,storageQueue=Promise.resolve(),storageMode="pending";
+function storageStatus(text,error=false){const e=$("#storageStatus");if(e){e.textContent=text;e.classList.toggle("storage-error",error)}}
+function openStorageDb(){return new Promise((resolve,reject)=>{if(!window.indexedDB){reject(new Error("IndexedDB is unavailable"));return}const request=indexedDB.open("kirana_pos_device_data",1);request.onupgradeneeded=()=>request.result.createObjectStore("app");request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error||new Error("Could not open device storage"))})}
+function readStorageDb(database){return new Promise((resolve,reject)=>{const tx=database.transaction("app","readonly"),request=tx.objectStore("app").get(KEY);request.onsuccess=()=>resolve(request.result||null);request.onerror=()=>reject(request.error||new Error("Could not read device storage"))})}
+function writeStorageDb(database,snapshot){return new Promise((resolve,reject)=>{const tx=database.transaction("app","readwrite");tx.objectStore("app").put(snapshot,KEY);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error||new Error("Could not save to device storage"));tx.onabort=()=>reject(tx.error||new Error("Device storage save was interrupted"))})}
+async function load(){
+ let stored=null;
+ try{storageDb=await openStorageDb();stored=await readStorageDb(storageDb);storageMode="indexeddb"}
+ catch(e){storageDb=null;storageMode="localstorage";storageStatus("Using browser local storage",true)}
+ if(stored){try{db=JSON.parse(typeof stored=="string"?stored:stored.data)}catch(e){storageStatus("Saved data could not be read; restore a backup",true)}}
+ try{const fallback=JSON.parse(localStorage.getItem(FALLBACK_KEY)||"null");if(fallback&&fallback.data)db=JSON.parse(fallback.data)}catch(e){storageStatus("Fallback local data could not be read; restore a backup",true)}
+ if(!db&&storageMode=="indexeddb"){try{const legacy=localStorage.getItem(KEY);if(legacy)db=JSON.parse(legacy)}catch(e){storageStatus("Previous local data could not be read; restore a backup",true)}}
+ if(!db||!db.products)seed();
+ fix();
+ if(storageMode=="indexeddb"&&!stored)await save();
+ else if(storageMode=="indexeddb")storageStatus("Saved on this device");
+ else if(storageMode=="localstorage")storageStatus("Local save fallback active",true);
+ try{if(navigator.storage&&navigator.storage.persist)await navigator.storage.persist()}catch(e){}
+}
+function save(){
+ let snapshot;
+ try{db.ui=db.ui||{};db.ui.listState=JSON.parse(JSON.stringify(listState));db.ui.currentTab=page;db.ui.currentGroup=cur;db.ui.pageByGroup={...pageByGroup};snapshot=JSON.stringify(db);storageStatus("Saving on this device…")}
+ catch(e){storageStatus("Save failed: "+e.message,true);console.error("Local data could not be prepared for saving",e);return Promise.resolve(false)}
+ storageQueue=storageQueue.then(async()=>{
+  try{
+   if(storageDb){await writeStorageDb(storageDb,{savedAt:Date.now(),data:snapshot});try{localStorage.removeItem(FALLBACK_KEY)}catch(e){}storageStatus("Saved on this device")}
+   else{localStorage.setItem(KEY,snapshot);storageStatus("Saved on this device")}
+  }catch(e){
+   if(storageDb){try{localStorage.setItem(FALLBACK_KEY,JSON.stringify({savedAt:Date.now(),data:snapshot}));storageStatus("Saved locally (fallback)")}catch(f){storageStatus("Save failed — export a backup ("+((f&&f.name)||"storage error")+")",true);throw f}}
+   else{storageStatus("Save failed — export a backup ("+((e&&e.name)||"storage error")+")",true);throw e}
+  }
+ });
+ storageQueue=storageQueue.catch(e=>{console.error("Local data save failed",e);return false});
+ return storageQueue
+}
+const opP=()=>db.products.map(p=>[p.id,esc(p.name)]);
+const T={
+products:{title:"Product Master",pre:"PRD-",f:[["name","Product name"],["cat","Category"],["brand","Brand","text",0,1],["barcode","Barcode / EAN","text",0,1],["unit","Base unit","sel",["Pcs","Kg","Pack"]],["pack","Box pack size","number"],["costPc","Cost per pc ₹","number"],["retail","Retail price (pc) ₹","number"],["wholesale","Wholesale price (box) ₹","number"],["open","Opening stock (pcs)","number"],["min","Min stock level","number"],["photo","Product photo","file",0,1]],
+ cols:[["Photo",p=>phCell("products",p)],["Product",p=>`<b>${esc(p.name)}</b><small>${esc(p.brand)} · ${esc(p.barcode)}</small>`],["Category",p=>esc(p.cat)],["Box",p=>p.pack+" "+p.unit],["Cost/pc",p=>money(p.costPc)],["Cost/box",p=>money(p.costPc*p.pack)],["Retail",p=>money(p.retail)],["Wholesale",p=>money(p.wholesale)],["Stock (pcs)",p=>stock(p.id)],["Stock (box)",p=>(stock(p.id)/p.pack).toFixed(1)],["Status",p=>stock(p.id)<=p.min?badge("LOW STOCK","r"):badge("OK","g")]]},
+purchases:{title:"Purchases Log",pre:"PUR-",f:[],cols:[["Supplier bill",r=>esc(r.invoiceRef||"—")],["Date",r=>r.date],["Supplier",r=>esc(sn(r.sup))],["Items",r=>`${r.lines.length} line(s)<small>${r.lines.map(x=>esc(x.productName||P(x.pid).name)+" · "+x.qty+" "+(x.unit=="Box"?"box":"pcs")).join("<br>")}</small>`],["Total",r=>`<b>${money(r.amount)}</b>`]]},
+sales:{title:"Sales Log",note:"Invoices are created from Easy Billing. Deleting one returns its stock.",pre:"INV-",f:[],cols:[["Invoice",s=>s.id],["Date",s=>s.date],["Customer",s=>esc(cn(s.cust))],["Payment",s=>s.pay],["Items",s=>s.lines.length],["Subtotal",s=>money(s.sub)],["Discount",s=>money(s.disc)],["GST",s=>money(s.gst)],["Total",s=>`<b>${money(s.total)}</b>`],["Profit",s=>money(profit(s))]]},
+customers:{title:"Customer Ledger (Khata)",pre:"CUS-",f:[["name","Customer name"],["phone","Phone"],["address","Address","text",0,1]],cols:[["ID",c=>c.id],["Customer",c=>esc(c.name)],["Phone",c=>esc(c.phone)],["Credit sales",c=>money(ccs(c))],["Repaid",c=>money(crp(c))],["Outstanding",c=>`<b>${money(ccs(c)-crp(c))}</b>`],["Status",c=>ccs(c)-crp(c)>0?badge("DUE","r"):badge("CLEARED","g")]]},
+suppliers:{title:"Supplier Payables",pre:"SUP-",f:[["name","Supplier name"],["contact","Contact person"],["phone","Phone"],["photo","Business / owner photo","file",0,1]],cols:[["ID",s=>s.id],["Photo",s=>phCell("suppliers",s)],["Supplier",s=>esc(s.name)],["Contact",s=>esc(s.contact)],["Phone",s=>esc(s.phone)],["Purchases",s=>money(spu(s))],["Paid",s=>money(spd(s))],["Outstanding",s=>`<b>${money(spu(s)-spd(s))}</b>`],["Status",s=>spu(s)-spd(s)>0?badge("PAYABLE","a"):badge("CLEARED","g")]]},
+expenses:{title:"Expenses Log",pre:"EXP-",f:[["date","Date","date"],["cat","Category","sel",["Rent","Electricity","Wages","Freight","Refreshments","Other"]],["amount","Amount ₹","number"],["note","Note","text",0,1]],cols:[["ID",e=>e.id],["Date",e=>e.date],["Category",e=>e.cat],["Note",e=>esc(e.note)],["Amount",e=>money(e.amount)]]},
+adjustments:{title:"Stock Adjustments &amp; Returns",pre:"ADJ-",f:[["date","Date","date"],["pid","Product","sel",opP],["kind","Reason","sel",["Customer return (+)","Count correction (+)","Damage or expiry (−)","Count correction (−)"]],["qty","Quantity (pcs)","number"]],
+ hook:r=>{r.pcs=r.qty*(r.kind.includes("(+)")?1:-1)},cols:[["ID",r=>r.id],["Date",r=>r.date],["Product",r=>esc(P(r.pid).name)],["Reason",r=>r.kind],["Pcs",r=>(r.pcs>0?"+":"")+r.pcs]]},
+payments:{title:"Payments Voucher Log",pre:"PAY-",f:[["date","Date","date"],["party","Party","sel",()=>[...db.customers.map(c=>["C|"+c.id,"Customer: "+esc(c.name)]),...db.suppliers.map(s=>["S|"+s.id,"Supplier: "+esc(s.name)])]],["mode","Mode","sel",["Cash","UPI","Card","Bank"]],["amount","Amount ₹","number"]],
+ hook:r=>{const a=r.party.split("|");r.type=a[0]=="C"?"Customer Payment":"Supplier Payment";r.party=a[1]},cols:[["ID",p=>p.id],["Date",p=>p.date],["Type",p=>p.type],["Party",p=>esc(p.type[0]=="C"?cn(p.party):sn(p.party))],["Mode",p=>p.mode],["Amount",p=>money(p.amount)]]}};
+const inp=f=>{const[n,l,ty,o,opt]=f;if(ty=="file")return`<label>${l}<input name="${n}" type="file" accept="image/*"></label>`;if(ty=="sel"){const ops=typeof o=="function"?o():o;return`<label>${l}<select name="${n}">${ops.map(x=>Array.isArray(x)?`<option value="${x[0]}">${x[1]}</option>`:`<option>${x}</option>`).join("")}</select></label>`}
+ return`<label>${l}<input name="${n}" type="${ty||"text"}" ${ty=="number"?'step="any" min="0"':""} ${ty=="date"?`value="${today()}"`:""} ${opt?"":"required"}></label>`};
+const ACT={customers:r=>`<button class="x" onclick="settle('C','${r.id}')">💰 Receive</button> `,suppliers:r=>`<button class="x" onclick="settle('S','${r.id}')">💸 Pay</button> `,sales:r=>`<button class="x" onclick="viewInv('${r.id}')">🧾 View</button> `,purchases:r=>`<button class="x" onclick="editPurchaseBill('${r.id}')">✏️ Edit bill</button> `};
+const listState={},selectedProducts=new Set();
+let purchaseDraft=null;
+const sortChoices=k=>k=="products"?[["stock-low","Stock: low to high"],["stock-high","Stock: high to low"],["price-low","Retail price: low to high"],["price-high","Retail price: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]]:k=="purchases"?[["date-new","Date: newest first"],["date-old","Date: oldest first"],["amount-low","Bill total: low to high"],["amount-high","Bill total: high to low"],["qty-low","Quantity (pcs): low to high"],["qty-high","Quantity (pcs): high to low"]]:k=="sales"?[["date-new","Date: newest first"],["date-old","Date: oldest first"],["amount-low","Total: low to high"],["amount-high","Total: high to low"]]:k=="customers"?[["amount-low","Balance: low to high"],["amount-high","Balance: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]]:k=="suppliers"?[["amount-low","Payable: low to high"],["amount-high","Payable: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]]:[["date-new","Date: newest first"],["date-old","Date: oldest first"],["amount-low","Amount: low to high"],["amount-high","Amount: high to low"],["name-az","Name: A to Z"],["name-za","Name: Z to A"]];
+function listFilterOptions(k){
+ if(k=="products")return[["all","All products"],["low","Low stock"],["available","In stock"],...[...new Set(db.products.map(p=>p.cat).filter(Boolean))].sort().map(x=>["category:"+x,"Category: "+esc(x)])];
+ if(k=="purchases")return[["all","All suppliers"],...db.suppliers.map(x=>[x.id,esc(x.name)])];
+ if(k=="sales")return[["all","All payments"],...["Cash","UPI","Card","Credit"].map(x=>[x, x])];
+ if(k=="expenses")return[["all","All categories"],...["Rent","Electricity","Wages","Freight","Refreshments","Other"].map(x=>[x,x])];
+ if(k=="adjustments")return[["all","All reasons"],...T.adjustments.f[2][3].map(x=>[x,x])];
+ if(k=="payments")return[["all","All payment types"],["Customer Payment","Customer payments"],["Supplier Payment","Supplier payments"]];
+ if(k=="customers")return[["all","All customers"],["due","With outstanding balance"],["cleared","No outstanding balance"]];
+ if(k=="suppliers")return[["all","All suppliers"],["due","With payable balance"],["cleared","No payable balance"]];
+ return null
+}
+function listTools(k){
+ const s=listState[k]||{open:false,query:"",from:"",to:"",sort:k=="products"||k=="customers"||k=="suppliers"?"name-az":"date-new",filter:"all"},filters=listFilterOptions(k),hasDate=["purchases","sales","expenses","adjustments","payments"].includes(k);
+ listState[k]=s;
+ return`<div class="list-tools"><button class="btn ghost" onclick="toggleListMenu('${k}')">☰ Filter &amp; sort</button>${k=="products"?`<button class="btn ghost" onclick="deleteSelectedProducts()" ${selectedProducts.size?"":"disabled"}>🗑 Delete selected (${selectedProducts.size})</button>`:""}<span class="list-count" id="list-count-${k}"></span></div><div class="list-menu ${s.open?"open":""}" id="list-menu-${k}">
+ <label>Search<input type="search" value="${esc(s.query)}" placeholder="Search this list…" oninput="updateList('${k}','query',this.value)"></label>
+ ${hasDate?`<label>From date<input type="date" value="${esc(s.from)}" oninput="updateList('${k}','from',this.value)"></label><label>To date<input type="date" value="${esc(s.to)}" oninput="updateList('${k}','to',this.value)"></label>`:""}
+ <label>Sort by<select onchange="updateList('${k}','sort',this.value)">${sortChoices(k).map(o=>`<option value="${o[0]}"${s.sort==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>
+ ${filters?`<label>${k=="products"?"Category / stock":k=="purchases"?"Supplier":k=="sales"?"Payment method":k=="expenses"?"Category":k=="adjustments"?"Reason":k=="payments"?"Party type":"Balance status"}<select onchange="updateList('${k}','filter',this.value)">${filters.map(o=>`<option value="${esc(o[0])}"${s.filter==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>`:""}
+ <button class="btn ghost" type="button" onclick="resetList('${k}')">↺ Clear filters</button>
+ </div>`
+}
+function toggleListMenu(k){listState[k].open=!listState[k].open;const e=$("#list-menu-"+k);e.classList.toggle("open",listState[k].open);save()}
+function updateList(k,key,value){listState[k][key]=value;renderList(k);save()}
+function resetList(k){const s=listState[k];Object.assign(s,{query:"",from:"",to:"",sort:k=="products"||k=="customers"||k=="suppliers"?"name-az":"date-new",filter:"all"});const menu=$("#list-menu-"+k);menu.querySelector('input[type="search"]').value="";menu.querySelectorAll('input[type="date"]').forEach(x=>x.value="");menu.querySelectorAll("select").forEach((x,i)=>x.value=i==0?s.sort:s.filter);renderList(k);save()}
+function purchaseBills(){
+ const groups=new Map();
+ db.purchases.forEach(line=>{
+  const key=String(line.billId||line.id);
+  if(!groups.has(key))groups.set(key,{id:key,date:line.date,sup:line.sup,invoiceRef:line.invoiceRef||"",note:line.note||"",lines:[],amount:0,qty:0});
+  const bill=groups.get(key);
+  bill.lines.push(line);
+  bill.amount+=+line.amount||0;
+  bill.qty+=+(line.pcs??(line.unit=="Box"?line.qty*P(line.pid).pack:line.qty))||0
+ });
+ return[...groups.values()]
+}
+function listSearchText(k,r){
+ if(k=="products")return[r.name,r.cat,r.brand,r.barcode,r.unit].join(" ");
+ if(k=="purchases")return[r.date,sn(r.sup),r.invoiceRef,r.note,r.amount,...r.lines.flatMap(x=>[x.productName||P(x.pid).name,x.unit,x.qty])].join(" ");
+ if(k=="sales")return[r.id,r.date,cn(r.cust),r.pay,...r.lines.map(x=>x.name),r.total].join(" ");
+ if(k=="customers")return[r.name,r.phone,r.address].join(" ");
+ if(k=="suppliers")return[r.name,r.contact,r.phone].join(" ");
+ if(k=="expenses")return[r.date,r.cat,r.note,r.amount].join(" ");
+ if(k=="adjustments")return[r.date,P(r.pid).name,r.kind,r.pcs].join(" ");
+ if(k=="payments")return[r.date,r.type,r.type[0]=="C"?cn(r.party):sn(r.party),r.mode,r.amount].join(" ");
+ return Object.entries(r).filter(([key,v])=>!["photo","photoOriginal","logo","logoOriginal"].includes(key)&&["string","number"].includes(typeof v)).map(x=>x[1]).join(" ")
+}
+function listFilterMatch(k,r,value){
+ if(value=="all")return true;
+ if(k=="products")return value=="low"?stock(r.id)<=r.min:value=="available"?stock(r.id)>0:value.startsWith("category:")?r.cat==value.slice(9):true;
+ if(k=="purchases")return r.sup==value;
+ if(k=="sales")return r.pay==value;
+ if(k=="expenses")return r.cat==value;
+ if(k=="adjustments")return r.kind==value;
+ if(k=="payments")return r.type==value;
+ if(k=="customers")return value=="due"?ccs(r)-crp(r)>0:ccs(r)-crp(r)<=0;
+ if(k=="suppliers")return value=="due"?spu(r)-spd(r)>0:spu(r)-spd(r)<=0;
+ return true
+}
+function listSortValue(k,r,sort){
+ if(sort.startsWith("date-"))return r.date||"";
+ if(sort.startsWith("stock-"))return stock(r.id);
+ if(sort.startsWith("price-"))return +r.retail||0;
+ if(k=="customers"&&sort.startsWith("amount-"))return ccs(r)-crp(r);
+ if(k=="suppliers"&&sort.startsWith("amount-"))return spu(r)-spd(r);
+ if(sort.startsWith("amount-"))return +(r.amount??r.total)||0;
+ if(sort.startsWith("qty-"))return +r.qty||0;
+ return String(k=="products"?r.name:k=="purchases"?P(r.pid).name:k=="sales"?cn(r.cust):r.name||r.cat||r.type||"").toLowerCase()
+}
+function listRows(k){
+ const s=listState[k]||{},q=(s.query||"").trim().toLowerCase();
+ const source=k=="purchases"?purchaseBills():[...db[k]];
+ let rows=source.filter(r=>(!q||listSearchText(k,r).toLowerCase().includes(q))&&(!s.from&&!s.to||!!r.date&&(!s.from||r.date>=s.from)&&(!s.to||r.date<=s.to))&&listFilterMatch(k,r,s.filter||"all"));
+ const sort=s.sort||"date-new",direction=sort.endsWith("-high")||sort.endsWith("-za")||sort=="date-new"?-1:1;
+ rows.sort((a,b)=>{const x=listSortValue(k,a,sort),y=listSortValue(k,b,sort);return(x<y?-1:x>y?1:0)*direction});
+ return rows
+}
+function selectProduct(id,checked){checked?selectedProducts.add(id):selectedProducts.delete(id);renderList("products")}
+function selectVisibleProducts(checked){listRows("products").forEach(r=>checked?selectedProducts.add(r.id):selectedProducts.delete(r.id));renderList("products")}
+function deleteSelectedProducts(){
+ if(!selectedProducts.size)return;
+ dlg(`<h3>Delete selected products?</h3><p class="mu">${selectedProducts.size} product(s) will be removed. Existing sales and purchase records will remain.</p><div class="row"><button class="btn" onclick="confirmDeleteSelectedProducts()">Delete products</button>${cls}</div>`)
+}
+function confirmDeleteSelectedProducts(){const names=new Map(db.products.filter(p=>selectedProducts.has(p.id)).map(p=>[p.id,p.name]));db.purchases.forEach(r=>{if(names.has(r.pid))r.productName=r.productName||names.get(r.pid)});db.products=db.products.filter(p=>!selectedProducts.has(p.id));selectedProducts.clear();save();$("#dlg").close();render()}
+function table(cols,rows,k){
+ const choose=k=="products",head=choose?`<th class="select-col"><input type="checkbox" aria-label="Select all visible products" onchange="selectVisibleProducts(this.checked)" ${rows.length&&rows.every(r=>selectedProducts.has(r.id))?"checked":""}></th>`:"";
+ return`<div class="tw"><table><thead><tr>${head}${cols.map(c=>`<th>${c[0]}</th>`).join("")}${k?"<th></th>":""}</tr></thead><tbody>${rows.map(r=>`<tr>${choose?`<td class="select-col"><input type="checkbox" aria-label="Select ${esc(r.name)}" onchange="selectProduct('${r.id}',this.checked)" ${selectedProducts.has(r.id)?"checked":""}></td>`:""}${cols.map(c=>`<td>${c[1](r)}</td>`).join("")}${k?`<td>${ACT[k]?ACT[k](r):""}${T[k]&&T[k].f.length?`<button class="x" onclick="edit('${k}','${r.id}')">✏️</button> `:""}<button class="x" onclick="del(this,'${k}','${r.id}')">🗑</button></td>`:""}</tr>`).join("")||`<tr><td class="mu" colspan="${cols.length+(choose?1:0)+(k?1:0)}">No matching records</td></tr>`}</tbody></table></div>`
+}
+function renderList(k){const target=$("#list-table-"+k);if(!target)return;const rows=listRows(k);target.innerHTML=table(T[k].cols,rows,k);const count=$("#list-count-"+k);if(count)count.textContent=`Showing ${rows.length} of ${k=="purchases"?purchaseBills().length:db[k].length}`;const bulk=$('#main button[onclick="deleteSelectedProducts()"]');if(k=="products"&&bulk){bulk.disabled=!selectedProducts.size;bulk.textContent=`🗑 Delete selected (${selectedProducts.size})`}}
+function logView(k){if(k=="purchases")return purchaseView();const t=T[k];return`<h2>${t.title}</h2>`+(t.f.length?`<div class="card"><form class="fg" onsubmit="return add('${k}',event)">${t.f.map(inp).join("")}<button class="btn">${ed&&ed.k==k?"Save changes":"+ Add"}</button>${ed&&ed.k==k?`<button type="button" class="btn ghost" onclick="ed=null;render()">Cancel</button>`:""}</form></div>`:`<p class="mu">${t.note}</p>`)+`<div class="card">${listTools(k)}<div id="list-table-${k}"></div></div>`}
+let ed=null;
+function blankPurchaseDraft(){return{date:today(),sup:db.suppliers[0]?.id||"",invoiceRef:"",note:"",lines:[]}}
+function ensurePurchaseDraft(){if(!purchaseDraft)purchaseDraft=db.purchaseDraft?JSON.parse(JSON.stringify(db.purchaseDraft)):blankPurchaseDraft();return purchaseDraft}
+function persistPurchaseDraft(){db.purchaseDraft=purchaseDraft;save()}
+function purchaseView(){
+ const d=ensurePurchaseDraft(),products=db.products;
+ return`<h2>Purchases Log</h2><p class="mu">Record one supplier bill with all products received. Stock and supplier payable update from the saved bill total.</p>
+ <div class="card"><h3>${d.editingBill?"Edit supplier bill":"New supplier bill"}</h3>
+ <div class="fg">
+ <label>Purchase date<input type="date" value="${esc(d.date||today())}" onchange="setPurchaseHeader('date',this.value)" required></label>
+ <label>Supplier<select onchange="setPurchaseHeader('sup',this.value)" required><option value="">Select supplier</option>${db.suppliers.map(s=>`<option value="${esc(s.id)}"${s.id==d.sup?" selected":""}>${esc(s.name)}</option>`).join("")}</select></label>
+ <label>Supplier invoice / bill no. (optional)<input value="${esc(d.invoiceRef||"")}" oninput="setPurchaseHeader('invoiceRef',this.value)" placeholder="Enter the wholesaler's bill number"></label>
+ <label>Note (optional)<input value="${esc(d.note||"")}" oninput="setPurchaseHeader('note',this.value)" placeholder="Payment terms, delivery note, etc."></label>
+ </div>
+ <h3>Products on this bill</h3><div id="purchase-lines">${purchaseLineRows(d,products)}</div>
+ ${products.length?`<div class="row"><button type="button" class="btn ghost" onclick="addPurchaseLine()">＋ Add product line</button></div>`:`<div class="card"><p><b>No products have been added to Product Master yet.</b></p><p class="mu">Create your products first. Then return here and use “＋ Add product line” to select each item on the supplier’s bill.</p><button type="button" class="btn" onclick="openProductsForPurchase()">＋ Go to Product Master</button></div>`}
+ <div class="tot"><div class="fin"><span>Bill total</span><span id="purchase-total">${money(sum(d.lines,x=>(+x.qty||0)*(+x.unitCost||0)))}</span></div></div>
+ <div class="row"><button type="button" class="btn" onclick="savePurchaseBill()">💾 ${d.editingBill?"Save bill changes":"Save purchase bill"}</button>${d.editingBill?`<button type="button" class="btn ghost" onclick="cancelPurchaseEdit()">Cancel edit</button>`:""}</div></div>
+ <div class="card">${listTools("purchases")}<div id="list-table-purchases"></div></div>`
+}
+function purchaseLineRows(d,products){
+ if(!d.lines.length)return`<p class="mu pad">No products added yet. Add one or more products from this bill.</p>`;
+ return`<div class="tw"><table><thead><tr><th>Product</th><th>Quantity</th><th>Unit</th><th>Unit cost ₹</th><th>Line total</th><th></th></tr></thead><tbody>${d.lines.map((line,i)=>`<tr>
+ <td><select onchange="updatePurchaseLine(${i},'pid',this.value)" aria-label="Product">${products.map(p=>`<option value="${esc(p.id)}"${p.id==line.pid?" selected":""}>${esc(p.name)}</option>`).join("")}</select></td>
+ <td><input type="number" min="0.01" step="any" value="${esc(line.qty)}" onchange="updatePurchaseLine(${i},'qty',this.value)" aria-label="Quantity"></td>
+ <td><select onchange="updatePurchaseLine(${i},'unit',this.value)" aria-label="Unit"><option value="Box"${line.unit=="Box"?" selected":""}>Box</option><option value="Pcs"${line.unit=="Pcs"?" selected":""}>Piece</option></select></td>
+ <td><input type="number" min="0" step="any" value="${esc(line.unitCost)}" onchange="updatePurchaseLine(${i},'unitCost',this.value)" aria-label="Unit cost"></td>
+ <td><b id="purchase-line-total-${i}">${money((+line.qty||0)*(+line.unitCost||0))}</b></td><td><button type="button" class="x" onclick="removePurchaseLine(${i})" aria-label="Remove product line">✕</button></td></tr>`).join("")}</tbody></table></div>`
+}
+function setPurchaseHeader(key,value){const d=ensurePurchaseDraft();d[key]=value;persistPurchaseDraft()}
+function addPurchaseLine(){
+ const d=ensurePurchaseDraft(),p=db.products[0];if(!p)return;
+ d.lines.push({pid:p.id,qty:1,unit:"Pcs",unitCost:+p.costPc||0});persistPurchaseDraft();
+ const target=$("#purchase-lines");if(target)target.innerHTML=purchaseLineRows(d,db.products);updatePurchaseTotals()
+}
+function updatePurchaseLine(index,key,value){
+ const d=ensurePurchaseDraft(),line=d.lines[index];if(!line)return;
+ line[key]=key=="qty"||key=="unitCost"?(+value||0):value;
+ if(key=="unit")line.unitCost=(line.unit=="Box"?P(line.pid).costPc*P(line.pid).pack:P(line.pid).costPc)||0;
+ if(key=="pid")line.unitCost=(line.unit=="Box"?P(line.pid).costPc*P(line.pid).pack:P(line.pid).costPc)||0;
+ persistPurchaseDraft();
+ const amount=$("#purchase-line-total-"+index);if(amount)amount.textContent=money(line.qty*line.unitCost);
+ updatePurchaseTotals()
+}
+function removePurchaseLine(index){const d=ensurePurchaseDraft();d.lines.splice(index,1);persistPurchaseDraft();const target=$("#purchase-lines");if(target)target.innerHTML=purchaseLineRows(d,db.products);updatePurchaseTotals()}
+function updatePurchaseTotals(){const d=ensurePurchaseDraft(),total=$("#purchase-total");if(total)total.textContent=money(sum(d.lines,x=>(+x.qty||0)*(+x.unitCost||0)))}
+function editPurchaseBill(id){
+ const bill=purchaseBills().find(x=>x.id==id);if(!bill)return;
+ purchaseDraft={editingBill:bill.id,date:bill.date,sup:bill.sup,invoiceRef:bill.invoiceRef,note:bill.lines[0]?.note||"",lines:bill.lines.map(x=>({pid:x.pid,qty:+x.qty||1,unit:x.unit=="Box"?"Box":"Pcs",unitCost:(+x.qty?+x.amount/+x.qty:0)}))};
+ persistPurchaseDraft();render();$("#main h3").scrollIntoView({behavior:"smooth",block:"center"})
+}
+function cancelPurchaseEdit(){purchaseDraft=blankPurchaseDraft();persistPurchaseDraft();render()}
+function openProductsForPurchase(){persistPurchaseDraft();pageByGroup.inventory="products";go("inventory")}
+function savePurchaseBill(){
+ const d=ensurePurchaseDraft(),message="Select a supplier, date and at least one valid product line.";
+ if(!d.sup||!db.suppliers.some(s=>s.id==d.sup)||!d.date||!d.lines.length||d.lines.some(x=>!db.products.some(p=>p.id==x.pid)||!Number.isFinite(+x.qty)||!(+x.qty>0)||!Number.isFinite(+x.unitCost)||+x.unitCost<0)){alert(message);return}
+ const group=d.editingBill||nextId("purchases","PUR-")+"-BILL",old=db.purchases.filter(x=>String(x.billId||x.id)==String(d.editingBill||""));
+ let serial=Math.max(1000,...db.purchases.map(x=>parseInt(String(x.id).split("-")[1])||0))+1;
+ const lines=d.lines.map((x,i)=>{const p=P(x.pid),qty=+x.qty,unit=x.unit=="Box"?"Box":"Pcs";return{id:old[i]?.id||"PUR-"+serial++,billId:group,date:d.date,sup:d.sup,invoiceRef:d.invoiceRef.trim(),note:d.note.trim(),pid:x.pid,productName:p.name,qty,unit,pcs:unit=="Box"?qty*p.pack:qty,amount:qty*(+x.unitCost)}});
+ if(d.editingBill)db.purchases=db.purchases.filter(x=>String(x.billId||x.id)!=String(d.editingBill));
+ db.purchases.push(...lines);purchaseDraft=blankPurchaseDraft();db.purchaseDraft=purchaseDraft;save();render()
+}
+async function add(k,e){e.preventDefault();const t=T[k],r={},old=ed&&ed.k==k?db[k].find(x=>x.id==ed.id):null;new FormData(e.target).forEach((v,n)=>r[n]=v);for(const f of t.f){if(f[2]=="number")r[f[0]]=+r[f[0]]||0;if(f[2]=="file"){const x=r[f[0]];if(x&&x.size){try{const original=await readImageSource(x),photo=await cropImage(original);if(!photo)return false;r[f[0]]=photo;r.photoOriginal=original}catch(err){alert("Could not open this image. Please choose another image.");return false}}else{r[f[0]]=(old&&old.photo)||"";r.photoOriginal=(old&&old.photoOriginal)||""}}}r.id=old?old.id:nextId(k,t.pre);if(t.hook)t.hook(r);if(old){db[k][db[k].indexOf(old)]=r;ed=null}else db[k].push(r);save();render();return false}
+function phCell(k,r){return`<div class="ph"><div class="pi" style="width:56px;height:56px">${r.photo?`<img src="${r.photo}" alt="" onclick="viewPh('${k}','${r.id}')">`:"No photo"}</div><label class="x">📷 ${r.photo?"Change":"Add"}<input type="file" accept="image/*" hidden onchange="setPh('${k}','${r.id}',this)"></label>${r.photo?`<button class="x" onclick="editPh('${k}','${r.id}')">✂️ Edit crop</button>`:""}</div>`}
+async function setPh(k,id,el){const f=el.files[0];if(!f)return;try{const original=await readImageSource(f),photo=await cropImage(original);if(!photo)return;const r=db[k].find(x=>x.id==id);r.photo=photo;r.photoOriginal=original;save();render()}catch(e){alert("Could not open this image. Please choose another image.")}finally{el.value=""}}
+async function editPh(k,id){const r=db[k].find(x=>x.id==id);if(!r||!r.photo)return;const original=r.photoOriginal||r.photo,photo=await cropImage(original);if(photo){r.photo=photo;r.photoOriginal=original;save();render()}}
+function viewPh(k,id){const r=db[k].find(x=>x.id==id);dlg(`<h3>${esc(r.name)}</h3><img src="${r.photo}" alt="" style="max-width:100%;border-radius:10px"><div class="row">${cls}</div>`)}
+function del(b,k,id){if(!b.dataset.s){b.dataset.s=1;b.textContent="Sure?";setTimeout(()=>{if(b.isConnected){delete b.dataset.s;b.textContent="🗑"}},3000);return}if(k=="products"){const name=P(id).name;db.purchases.forEach(r=>{if(r.pid==id)r.productName=r.productName||name});selectedProducts.delete(id)}if(k=="purchases"){db.purchases=db.purchases.filter(r=>String(r.billId||r.id)!=String(id));if(purchaseDraft&&String(purchaseDraft.editingBill)==String(id)){purchaseDraft=blankPurchaseDraft();db.purchaseDraft=purchaseDraft}}else db[k]=db[k].filter(r=>r.id!=id);save();render()}
+function edit(k,id){ed={k,id};render();const r=db[k].find(x=>x.id==id),fm=$("#main form");T[k].f.forEach(f=>{const el=fm.elements[f[0]];if(!el||f[2]=="file")return;let v=r[f[0]];if(k=="payments"&&f[0]=="party")v=(r.type[0]=="C"?"C|":"S|")+r.party;if(k=="adjustments"&&f[0]=="qty")v=Math.abs(r.pcs);el.value=v==null?"":v});fm.scrollIntoView({behavior:"smooth",block:"center"})}
+function viewInv(id){receipt(db.sales.find(s=>s.id==id))}
+const hint=h=>{const e=$("#ph");if(e)e.innerHTML=h};
+function rtext(s){return[db.shop||"Kirana Store","Invoice "+s.id+" · "+s.date,"Customer: "+cn(s.cust)+" · "+s.pay,"",...s.lines.map(l=>l.name+"  "+l.qty+(l.mode=="W"?" box":" pc")+" x "+money(l.price)+" = "+money(l.total)),"","Subtotal: "+money(s.sub),"Discount: -"+money(s.disc),"GST ("+(s.rate||0)+"%): "+money(s.gst),"TOTAL: "+money(s.total),"","Thank you! Visit again."].join("\n")}
+function doPrint(id){const t=document.title;let f=0;const b=()=>{f=1},a=()=>{document.title=t;removeEventListener("afterprint",a)};document.title="Invoice "+id;addEventListener("beforeprint",b);addEventListener("afterprint",a);try{print()}catch(e){}removeEventListener("beforeprint",b);if(!f){document.title=t;removeEventListener("afterprint",a);hint("If no print window appeared, printing may be blocked in this view. Use Share / Copy, or open the app in a full browser tab and try again.")}}
+async function shareRcpt(id){const t=rtext(db.sales.find(s=>s.id==id));try{if(navigator.share){await navigator.share({title:"Invoice "+id,text:t});return}}catch(e){if(e&&e.name=="AbortError")return}try{await navigator.clipboard.writeText(t);hint("Receipt copied. Paste it into WhatsApp or any app.")}catch(e){hint(`<textarea readonly rows="8" onfocus="this.select()">${esc(t)}</textarea>`)}}
+function settle(t,id){const c=t=="C",p=(c?db.customers:db.suppliers).find(x=>x.id==id),due=c?ccs(p)-crp(p):spu(p)-spd(p);dlg(`<h3>${c?"Receive payment from":"Pay supplier"} ${esc(p.name)}</h3><p class="mu">Outstanding: ${money(due)}</p><label>Amount ₹<input id="sa" type="number" min="0" step="any" value="${Math.max(0,due)}"></label><label>Mode<select id="sm"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank</option></select></label><div class="row"><button class="btn" onclick="saveSettle('${t}','${id}')">Save payment</button>${cls}</div>`)}
+function saveSettle(t,id){const a=+$("#sa").value;if(!(a>0))return;db.payments.push({id:nextId("payments","PAY-"),date:today(),type:t=="C"?"Customer Payment":"Supplier Payment",party:id,mode:$("#sm").value,amount:a});save();$("#dlg").close();render()}
+function billingView(){const o=(a,v)=>a.map(x=>`<option${x==v?" selected":""}>${x}</option>`).join("");
+return`<h2>Easy Billing</h2><div class="pos"><div class="card"><div class="srch"><input id="q" placeholder="Search product name or barcode…" autocomplete="off" oninput="sug()" onkeydown="if(event.key=='Enter')sugFirst()"><div id="sg" class="sg"></div></div><div id="cartBox"></div></div>
+<div class="card"><div class="fg" style="grid-template-columns:1fr 1fr"><label>Customer<select onchange="setBo('cust',this.value)"><option value="">Walk-in</option>${db.customers.map(c=>`<option value="${c.id}"${c.id==bo.cust?" selected":""}>${esc(c.name)}</option>`).join("")}</select></label>
+<label>Payment<select onchange="setBo('pay',this.value)">${o(["Cash","UPI","Card","Credit"],bo.pay)}</select></label>
+<label>Discount<input type="number" min="0" value="${bo.disc}" oninput="setBo('disc',this.value)"></label><label>Type<select onchange="setBo('dtype',this.value)">${o(["₹","%"],bo.dtype)}</select></label>
+<label>GST %<input type="number" min="0" value="${bo.gst}" oninput="setBo('gst',this.value)"></label></div><div id="tot" class="tot"></div><button class="btn big" onclick="checkout()">Save Invoice / Checkout</button><p id="msg" class="mu"></p></div></div>`}
+function setBo(k,v){bo[k]=k=="disc"||k=="gst"?+v||0:v;drawTot()}
+function sug(){const q=$("#q").value.trim().toLowerCase(),b=$("#sg");if(!q){b.innerHTML="";return}const m=db.products.filter(p=>(p.name+" "+p.barcode).toLowerCase().includes(q)).slice(0,8);
+ b.innerHTML=m.length?m.map(p=>`<button onclick="addCart('${p.id}')">${p.photo?`<img class="th" src="${p.photo}" alt="">`:""}<b>${esc(p.name)}</b><small>${stock(p.id)} pcs in stock · ${money(p.retail)}</small></button>`).join(""):`<div class="mu pad">No match</div>`}
+function sugFirst(){const b=$("#sg button");if(b)b.click()}
+function addCart(id){const x=cart.find(i=>i.pid==id&&i.mode=="R");x?x.qty++:cart.push({pid:id,qty:1,mode:"R"});$("#q").value="";$("#sg").innerHTML="";drawCart();$("#q").focus()}
+function drawCart(){const sel=(m,v)=>m==v?" selected":"";$("#cartBox").innerHTML=cart.length?`<div class="tw"><table><thead><tr><th>Item</th><th>Price type</th><th>Qty</th><th>Rate</th><th>Total</th><th></th></tr></thead><tbody>${cart.map((i,x)=>{const p=P(i.pid),pr=i.mode=="W"?p.wholesale:p.retail;return`<tr><td>${p.photo?`<img class="th" src="${p.photo}" alt="">`:""}${esc(p.name)}<small>${stock(p.id)} pcs in stock</small></td><td><select onchange="cart[${x}].mode=this.value;drawCart()"><option value="R"${sel(i.mode,"R")}>Retail (Piece)</option><option value="W"${sel(i.mode,"W")}>Wholesale (Box)</option></select></td><td><input type="number" class="q" min="0.01" step="any" value="${i.qty}" onchange="cart[${x}].qty=+this.value>0?+this.value:1;drawCart()"></td><td>${money(pr)}</td><td><b>${money(pr*i.qty)}</b></td><td><button class="x" onclick="cart.splice(${x},1);drawCart()">✕</button></td></tr>`}).join("")}</tbody></table></div>`:`<p class="mu pad">Cart is empty. Search for a product above.</p>`;drawTot()}
+function drawTot(){const c=calc(cart,bo.disc,bo.dtype,bo.gst);$("#tot").innerHTML=`<div><span>Subtotal</span><span>${money(c.sub)}</span></div><div><span>Discount</span><span>− ${money(c.disc)}</span></div><div><span>Taxable amount</span><span>${money(c.taxable)}</span></div><div><span>GST (${bo.gst}%)</span><span>${money(c.gst)}</span></div><div class="fin"><span>Total payable</span><span>${money(c.total)}</span></div>`}
+function checkout(){const m=t=>{const e=$("#msg");e.textContent=t;e.style.color="var(--redt)"};if(!cart.length)return m("Add at least one item.");if(bo.pay=="Credit"&&!bo.cust)return m("Select a customer for a credit sale.");const need={};cart.forEach(i=>need[i.pid]=(need[i.pid]||0)+(i.mode=="W"?i.qty*P(i.pid).pack:i.qty));for(const id in need)if(need[id]>stock(id))return m("Not enough stock: "+P(id).name+" has only "+stock(id)+" pcs.");
+ const s=mk(cart.map(i=>({...i})),{...bo,date:today()});db.sales.push(s);save();cart=[];bo.disc=0;bo.cust="";bo.pay="Cash";render();receipt(s)}
+const dlg=h=>{$("#dlg").innerHTML=h;$("#dlg").showModal()},cls=`<button class="btn ghost" onclick="$('#dlg').close()">Close</button>`;
+let cropState=null;
+$("#dlg").addEventListener("close",()=>{if(cropState){const done=cropState.resolve;cropState=null;done(null)}});
+function readImageSource(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error||new Error("Image file could not be read"));reader.readAsDataURL(file)})}
+async function cropImage(file){
+ try{
+  const src=typeof file=="string"?file:await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(r.error||new Error("Image file could not be read"));r.readAsDataURL(file)});
+  const image=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(new Error("Image could not be decoded"));i.src=src});
+  return await new Promise(resolve=>{
+   cropState={resolve,image,angle:0,rect:null,scale:1,rotated:null,drag:null};
+   dlg(`<h3>Adjust image</h3><p class="mu">Drag inside the frame to move it, drag an edge or corner to resize, or drag outside to draw a new crop.</p><div class="crop-wrap"><canvas id="cropCanvas" aria-label="Image crop area"></canvas></div><div class="crop-tools"><button class="btn ghost" onclick="rotateCrop()">↻ Rotate 90°</button><button class="btn" onclick="saveCrop()">Save cropped image</button><button class="btn ghost" onclick="cancelCrop()">Cancel</button></div><p class="crop-help">The grid helps align the image. Your original file is not changed.</p>`);
+   resetCrop();
+  });
+ }catch(e){alert("Could not open this image. Please choose another image.");return null}
+}
+function rotatedImage(){
+ const s=cropState,image=s.image,swap=s.angle%180!==0,w=swap?image.naturalHeight:image.naturalWidth,h=swap?image.naturalWidth:image.naturalHeight,c=document.createElement("canvas");
+ c.width=w;c.height=h;const x=c.getContext("2d");x.translate(w/2,h/2);x.rotate(s.angle*Math.PI/180);x.drawImage(image,-image.naturalWidth/2,-image.naturalHeight/2);return c
+}
+function resetCrop(){
+ const s=cropState;if(!s)return;s.rotated=rotatedImage();s.scale=Math.min(1,720/s.rotated.width,460/s.rotated.height);
+ const c=$("#cropCanvas");c.width=Math.max(1,Math.round(s.rotated.width*s.scale));c.height=Math.max(1,Math.round(s.rotated.height*s.scale));
+ const margin=Math.min(c.width,c.height)*.06;s.rect={x:margin,y:margin,w:c.width-2*margin,h:c.height-2*margin};drawCrop()
+}
+function drawCrop(){
+ const s=cropState;if(!s)return;const c=$("#cropCanvas"),x=c.getContext("2d"),r=s.rect;x.clearRect(0,0,c.width,c.height);x.drawImage(s.rotated,0,0,c.width,c.height);
+ x.fillStyle="rgba(0,0,0,.58)";x.fillRect(0,0,c.width,c.height);x.clearRect(r.x,r.y,r.w,r.h);x.drawImage(s.rotated,r.x/s.scale,r.y/s.scale,r.w/s.scale,r.h/s.scale,r.x,r.y,r.w,r.h);
+ x.strokeStyle="#fff";x.lineWidth=2;x.strokeRect(r.x,r.y,r.w,r.h);x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=1;
+ for(let i=1;i<3;i++){x.beginPath();x.moveTo(r.x+r.w*i/3,r.y);x.lineTo(r.x+r.w*i/3,r.y+r.h);x.moveTo(r.x,r.y+r.h*i/3);x.lineTo(r.x+r.w,r.y+r.h*i/3);x.stroke()}
+ x.fillStyle="#fff";[[r.x,r.y],[r.x+r.w,r.y],[r.x,r.y+r.h],[r.x+r.w,r.y+r.h]].forEach(p=>{x.fillRect(p[0]-5,p[1]-5,10,10)})
+}
+function cropPoint(e){const c=$("#cropCanvas"),b=c.getBoundingClientRect();return{x:Math.max(0,Math.min(c.width,(e.clientX-b.left)*c.width/b.width)),y:Math.max(0,Math.min(c.height,(e.clientY-b.top)*c.height/b.height))}}
+function cropHandle(p,r){
+ const near=(a,b)=>Math.abs(a-b)<14;
+ if(near(p.x,r.x)&&near(p.y,r.y))return"nw";if(near(p.x,r.x+r.w)&&near(p.y,r.y))return"ne";if(near(p.x,r.x)&&near(p.y,r.y+r.h))return"sw";if(near(p.x,r.x+r.w)&&near(p.y,r.y+r.h))return"se";
+ if(near(p.y,r.y)&&p.x>=r.x&&p.x<=r.x+r.w)return"n";if(near(p.y,r.y+r.h)&&p.x>=r.x&&p.x<=r.x+r.w)return"s";
+ if(near(p.x,r.x)&&p.y>=r.y&&p.y<=r.y+r.h)return"w";if(near(p.x,r.x+r.w)&&p.y>=r.y&&p.y<=r.y+r.h)return"e";
+ if(p.x>r.x&&p.x<r.x+r.w&&p.y>r.y&&p.y<r.y+r.h)return"move";return"draw"
+}
+function cropDown(e){if(!cropState)return;const c=$("#cropCanvas"),p=cropPoint(e),r=cropState.rect,mode=cropHandle(p,r);cropState.drag={mode,start:p,rect:{...r}};if(mode=="draw")cropState.rect={x:p.x,y:p.y,w:0,h:0};c.setPointerCapture(e.pointerId);drawCrop()}
+function cropMove(e){
+ const s=cropState;if(!s||!s.drag)return;const c=$("#cropCanvas"),p=cropPoint(e),d=s.drag,dx=p.x-d.start.x,dy=p.y-d.start.y,r={...d.rect},min=20;
+ if(d.mode=="move"){r.x=Math.max(0,Math.min(c.width-r.w,d.rect.x+dx));r.y=Math.max(0,Math.min(c.height-r.h,d.rect.y+dy))}
+ else{
+  const m=d.mode;if(m=="draw"){r.x=Math.min(d.start.x,p.x);r.y=Math.min(d.start.y,p.y);r.w=Math.abs(dx);r.h=Math.abs(dy)}
+  else{if(m.includes("w")){r.x=Math.max(0,Math.min(d.rect.x+d.rect.w-min,d.rect.x+dx));r.w=d.rect.x+d.rect.w-r.x}if(m.includes("e"))r.w=Math.max(min,Math.min(c.width-d.rect.x,d.rect.w+dx));if(m.includes("n")){r.y=Math.max(0,Math.min(d.rect.y+d.rect.h-min,d.rect.y+dy));r.h=d.rect.y+d.rect.h-r.y}if(m.includes("s"))r.h=Math.max(min,Math.min(c.height-d.rect.y,d.rect.h+dy))}
+ }
+ s.rect=r;drawCrop()
+}
+function cropUp(){if(!cropState)return;const s=cropState;if(s.drag&&s.drag.mode=="draw"&&(s.rect.w<1||s.rect.h<1))s.rect=s.drag.rect;s.drag=null;drawCrop()}
+function rotateCrop(){if(!cropState)return;cropState.angle=(cropState.angle+90)%360;resetCrop()}
+function finishCrop(value){if(!cropState)return;const done=cropState.resolve;cropState=null;$("#dlg").close();done(value)}
+function cancelCrop(){finishCrop(null)}
+function saveCrop(){
+ const s=cropState;if(!s)return;const r=s.rect,x=Math.min(s.rotated.width-1,Math.max(0,Math.round(r.x/s.scale))),y=Math.min(s.rotated.height-1,Math.max(0,Math.round(r.y/s.scale))),w=Math.max(1,Math.min(s.rotated.width-x,Math.round(r.w/s.scale))),h=Math.max(1,Math.min(s.rotated.height-y,Math.round(r.h/s.scale))),scale=Math.min(1,480/Math.max(w,h)),out=document.createElement("canvas");
+ out.width=Math.max(1,Math.round(w*scale));out.height=Math.max(1,Math.round(h*scale));out.getContext("2d").drawImage(s.rotated,x,y,w,h,0,0,out.width,out.height);finishCrop(out.toDataURL("image/jpeg",.84))
+}
+$("#dlg").addEventListener("pointerdown",e=>{if(e.target.id=="cropCanvas")cropDown(e)});
+$("#dlg").addEventListener("pointermove",e=>{if(e.target.id=="cropCanvas")cropMove(e)});
+$("#dlg").addEventListener("pointerup",e=>{if(e.target.id=="cropCanvas")cropUp()});
+function receipt(s){dlg(`<h3 style="margin:0">${esc(db.shop||"Kirana Store")}</h3><h3>Invoice ${s.id}</h3><p class="mu">${s.date} · ${esc(cn(s.cust))} · ${s.pay}</p><div class="tw"><table><thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead><tbody>${s.lines.map(l=>`<tr><td>${esc(l.name)}</td><td>${l.qty} ${l.mode=="W"?"box":"pc"}</td><td>${money(l.price)}</td><td>${money(l.total)}</td></tr>`).join("")}</tbody></table></div><div class="tot"><div><span>Subtotal</span><span>${money(s.sub)}</span></div><div><span>Discount</span><span>− ${money(s.disc)}</span></div><div><span>GST (${s.rate||0}%)</span><span>${money(s.gst)}</span></div><div class="fin"><span>Total</span><span>${money(s.total)}</span></div></div><p class="mu" style="text-align:center">Thank you! Visit again.</p><div class="row np"><button class="btn" onclick="doPrint('${s.id}')">Print</button><button class="btn ghost" onclick="shareRcpt('${s.id}')">Share / Copy</button>${cls}</div><div id="ph" class="np mu"></div>`)}
+const baseReceipt=receipt;
+receipt=function(s){
+ baseReceipt(s);const p=db.storeProfile||{},h=$("#dlg h3");if(!h)return;h.textContent=storeName();
+ if(p.logo)h.insertAdjacentHTML("beforebegin",`<img src="${esc(p.logo)}" alt="Store logo" style="display:block;max-width:90px;max-height:70px;object-fit:contain;margin:0 auto 8px">`);
+ const details=[p.address,p.phone&&"Phone: "+p.phone,p.email,p.gstin&&"GSTIN: "+p.gstin,p.upi&&"UPI: "+p.upi].filter(Boolean);
+ if(details.length)h.insertAdjacentHTML("afterend",`<p class="mu" style="margin:4px 0 10px">${details.map(esc).join("<br>")}</p>`);
+ const footer=$("#dlg p[style*='text-align:center']");if(p.footer&&footer)footer.textContent=p.footer
+};
+function kpis(){const t=today(),m=t.slice(0,7),ts=db.sales.filter(s=>s.date==t),ms=db.sales.filter(s=>s.date.startsWith(m)),inv=sum(db.products,p=>Math.max(0,stock(p.id))*p.costPc),low=db.products.filter(p=>stock(p.id)<=p.min).length,mtd=sum(ms,profit)-sum(db.expenses.filter(e=>e.date.startsWith(m)),e=>+e.amount);
+ const K=[["Today’s Sales",money(sum(ts,s=>s.total)),""],["Today’s Gross Profit",money(sum(ts,profit)),"g"],["Inventory Valuation",money(inv),""],["Month-to-Date Profit",money(mtd),mtd<0?"r":"g"],["Low-Stock Items",low,low?"r":"g"]];
+ return`<div class="kp">${K.map(k=>`<div class="k ${k[2]}"><span>${k[0]}</span><b>${k[1]}</b></div>`).join("")}</div>`}
+function catStats(){const o={};db.sales.forEach(s=>s.lines.forEach(l=>{const n=s.sub?l.total*s.taxable/s.sub:0,c=o[l.cat]=o[l.cat]||{rev:0,cogs:0,profit:0};c.rev+=n;c.cogs+=l.cogs;c.profit+=n-l.cogs}));return o}
+function dashView(){const rev=sum(db.sales,s=>s.taxable),cg=sum(db.sales,s=>sum(s.lines,l=>l.cogs)),ex=sum(db.expenses,e=>+e.amount),low=db.products.filter(p=>stock(p.id)<=p.min),L=(a,b,c)=>`<tr><td>${a}</td><td>${b}</td></tr>`;
+return`<h2>Dashboard &amp; Visual Analytics</h2>${kpis()}<div class="g2"><div class="card"><h3>Profit &amp; Loss (all time)</h3><div class="tw"><table><tbody>${L("Revenue (after discount)",money(rev))}${L("Cost of goods sold",money(cg))}${L("<b>Gross profit</b>",`<b>${money(rev-cg)}</b>`)}${L("Operating expenses",money(ex))}${L("<b>Net operating profit</b>",`<b>${money(rev-cg-ex)}</b>`)}${L("Customer dues (receivable)",money(sum(db.customers,c=>ccs(c)-crp(c))))}${L("Supplier payables",money(sum(db.suppliers,s=>spu(s)-spd(s))))}</tbody></table></div></div>
+<div class="card"><h3>Low-stock alerts</h3>${table([["Product",p=>esc(p.name)],["Stock",p=>stock(p.id)+" pcs"],["Min",p=>p.min]],low)}</div></div>
+<div class="g2"><div class="card"><h3>Gross profit by category</h3><div class="cv"><canvas id="c1"></canvas></div></div><div class="card"><h3>Payment method breakdown</h3><div class="cv"><canvas id="c2"></canvas></div></div></div><div class="card"><h3>Monthly revenue &amp; COGS</h3><div class="cv"><canvas id="c3"></canvas></div></div>`}
+function drawCharts(){if(!window.Chart)return;ch.forEach(c=>c.destroy());ch=[];const cs=getComputedStyle(document.documentElement);Chart.defaults.color=cs.getPropertyValue("--mu").trim();Chart.defaults.borderColor=cs.getPropertyValue("--bd").trim();
+ const o={maintainAspectRatio:false},cat=catStats(),pay={Cash:0,UPI:0,Card:0,Credit:0},mo={};
+ db.sales.forEach(s=>{pay[s.pay]=(pay[s.pay]||0)+s.total;const m=s.date.slice(0,7),x=mo[m]=mo[m]||{r:0,c:0};x.r+=s.taxable;x.c+=sum(s.lines,l=>l.cogs)});const ms=Object.keys(mo).sort();
+ ch.push(new Chart($("#c1"),{type:"bar",data:{labels:Object.keys(cat),datasets:[{label:"Gross profit ₹",data:Object.values(cat).map(v=>+v.profit.toFixed(2)),backgroundColor:"#3b6db3",borderRadius:6}]},options:{...o,plugins:{legend:{display:false}}}}));
+ ch.push(new Chart($("#c2"),{type:"doughnut",data:{labels:Object.keys(pay),datasets:[{data:Object.values(pay).map(v=>+v.toFixed(2)),backgroundColor:["#3b6db3","#16a34a","#f59e0b","#dc2626"],borderWidth:0}]},options:{...o,cutout:"62%"}}));
+ ch.push(new Chart($("#c3"),{type:"line",data:{labels:ms,datasets:[{label:"Revenue",data:ms.map(m=>+mo[m].r.toFixed(2)),borderColor:"#3b6db3",tension:.3},{label:"COGS",data:ms.map(m=>+mo[m].c.toFixed(2)),borderColor:"#f59e0b",tension:.3}]},options:o}))}
+function profileView(){
+ const p=db.storeProfile||{},logo=p.logo||"";
+ return`<h2>Store Profile</h2><p class="mu">Set the business details used across the app and on customer invoices.</p>
+ <form class="card" onsubmit="return saveProfile(event)"><div class="fg">
+ <label>Store name<input name="name" value="${esc(p.name||db.shop||"")}" placeholder="e.g. Shree Ganesh Kirana" required></label>
+ <label>Owner / manager<input name="owner" value="${esc(p.owner||"")}" placeholder="Full name"></label>
+ <label>Phone<input name="phone" type="tel" value="${esc(p.phone||"")}" placeholder="Business phone"></label>
+ <label>Email<input name="email" type="email" value="${esc(p.email||"")}" placeholder="name@example.com"></label>
+ <label>GSTIN<input name="gstin" value="${esc(p.gstin||"")}" placeholder="GST registration number"></label>
+ <label>UPI ID<input name="upi" value="${esc(p.upi||"")}" placeholder="store@upi"></label>
+ <label style="grid-column:1/-1">Store address<textarea name="address" rows="2" placeholder="Street, area, city, state, PIN code">${esc(p.address||"")}</textarea></label>
+ <label style="grid-column:1/-1">Invoice footer / thank-you note<input name="footer" value="${esc(p.footer||"")}" placeholder="Thank you! Visit again."></label>
+ <label>Store logo<input name="logo" type="file" accept="image/*"><small class="mu">Selecting a logo opens the crop and rotate editor.</small></label>
+ ${logo?`<div><span class="mu">Current logo</span><br><img src="${logo}" alt="Store logo" style="width:76px;height:76px;object-fit:contain;border-radius:10px;background:var(--calc);margin-top:6px"><br><button type="button" class="x" onclick="editStoreLogo()">✂️ Edit crop</button></div>`:""}
+ </div><div class="row"><button class="btn">Save store profile</button></div></form>`;
+}
+async function saveProfile(e){
+ e.preventDefault();const f=new FormData(e.target),p={...(db.storeProfile||{})};
+ ["name","owner","phone","email","gstin","upi","address","footer"].forEach(k=>p[k]=String(f.get(k)||"").trim());
+ const logo=f.get("logo");if(logo&&logo.size){try{p.logoOriginal=await readImageSource(logo);p.logo=await cropImage(p.logoOriginal);if(!p.logo)return false}catch(err){alert("Could not open this image. Please choose another image.");return false}}
+ db.storeProfile=p;db.shop=p.name;save();render();return false
+}
+async function editStoreLogo(){const p=db.storeProfile||{};if(!p.logo)return;const original=p.logoOriginal||p.logo,logo=await cropImage(original);if(logo){p.logo=logo;p.logoOriginal=original;db.storeProfile=p;save();render()}}
+function reportsView(){const c=catStats();return`<h2>Reports &amp; Category Performance</h2><div class="card">${table([["Category",r=>esc(r[0])],["Revenue",r=>money(r[1].rev)],["COGS",r=>money(r[1].cogs)],["Gross profit",r=>`<b>${money(r[1].profit)}</b>`],["Margin",r=>(r[1].rev?r[1].profit/r[1].rev*100:0).toFixed(1)+"%"]],Object.entries(c))}</div>
+<div class="card"><h3>Shop details</h3><label>Shop name on receipts<input value="${esc(db.shop||"")}" placeholder="Kirana Store" onchange="db.shop=this.value.trim();db.storeProfile.name=db.shop;save();render()"></label></div><div class="card"><h3>Data tools</h3><div class="row" style="flex-wrap:wrap"><button class="btn" onclick="exp('sales')">📄 Sales CSV</button><button class="btn" onclick="exp('cust')">📄 Customer balances CSV</button><button class="btn" onclick="exp('json')">💾 Backup JSON</button><button class="btn ghost" onclick="imp()">📥 Import backup</button><button class="btn ghost" onclick="wipe(this)">Clear all data</button></div></div>`}
+function wipe(b){if(!b.dataset.s){b.dataset.s=1;b.textContent="Tap again to confirm";return}db={};fix();save();render()}
+const csv=a=>a.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
+function exp(k){let t,x;if(k=="json"){t="Backup JSON";x=JSON.stringify(db)}else if(k=="sales"){t="Sales CSV";x=csv([["Invoice","Date","Customer","Payment","Subtotal","Discount","GST","Total","Profit"],...db.sales.map(s=>[s.id,s.date,cn(s.cust),s.pay,s.sub,s.disc,s.gst,s.total,profit(s)])])}else{t="Customer balances CSV";x=csv([["ID","Name","Phone","Credit sales","Repaid","Balance"],...db.customers.map(c=>[c.id,c.name,c.phone,ccs(c),crp(c),ccs(c)-crp(c)])])}
+ dlg(`<h3>${t}</h3><p class="mu">Copy this text and paste it into a file (${k=="json"?".json":".csv, opens in Excel"}).</p><textarea id="ta" readonly rows="10">${esc(x)}</textarea><div class="row"><button class="btn" onclick="cp()">Copy</button>${cls}</div>`)}
+function cp(){const a=$("#ta");a.select();try{navigator.clipboard.writeText(a.value)}catch(e){document.execCommand("copy")}}
+function imp(){dlg(`<h3>Import data</h3><p class="mu">Choose a backup file or paste its JSON. This replaces current data.</p><input type="file" accept=".json,application/json" onchange="rd(this)"><textarea id="ta" rows="8" placeholder="Paste backup JSON here"></textarea><div class="row"><button class="btn" onclick="doImp()">Restore</button>${cls}</div><p id="im" class="mu"></p>`)}
+function rd(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>$("#ta").value=r.result;r.readAsText(f)}
+function doImp(){try{const d=JSON.parse($("#ta").value);if(!d.products||!d.sales)throw 0;db=d;fix();save();$("#dlg").close();render()}catch(e){$("#im").textContent="That does not look like a valid backup."}}
+const NAV=[
+ {id:"billing",label:"🧾 Billing & Sales",pages:[["billing","Easy Billing"],["sales","Sales Log"]]},
+ {id:"inventory",label:"📦 Inventory",pages:[["products","Product Master"],["adjustments","Stock Adjustments"]]},
+ {id:"purchasing",label:"🛒 Purchasing",pages:[["purchases","Purchases Log"],["suppliers","Supplier Payables"],["payments","Payment Vouchers"]]},
+ {id:"customers",label:"👥 Customers",pages:[["customers","Customer Ledger"]]},
+ {id:"insights",label:"📊 Insights & Expenses",pages:[["dash","Dashboard & Analytics"],["reports","Reports & Categories"],["expenses","Expenses Log"]]},
+ {id:"profile",label:"🏪 Store Profile",pages:[["profile","Store Profile"]]}
+];
+const PAGE_GROUP=Object.fromEntries(NAV.flatMap(group=>group.pages.map(([id])=>[id,group.id])));
+const V={billing:billingView,dash:dashView,profile:profileView,reports:reportsView};KS.forEach(k=>{if(T[k])V[k]=()=>logView(k)});
+function go(id){const group=NAV.find(n=>n.id==id);if(!group)return;cur=id;page=pageByGroup[cur]||group.pages[0][0];save();render();scrollTo(0,0)}
+function showPage(id){if(PAGE_GROUP[id]!=cur)return;page=id;pageByGroup[cur]=id;save();render()}
+function render(){
+ $("#appTitle").textContent="🛒 "+storeName();document.title=storeName()+" · POS";
+ $("#nav").innerHTML=NAV.map(n=>`<button class="${n.id==cur?"on":""}" aria-current="${n.id==cur?"page":"false"}" onclick="go('${n.id}')">${n.label}</button>`).join("");
+ const group=NAV.find(n=>n.id==cur)||NAV[0];
+ if(!group.pages.some(([id])=>id==page))page=group.pages[0][0];
+ $("#subnav").innerHTML=group.pages.length>1?group.pages.map(([id,label])=>`<button class="${id==page?"on":""}" aria-current="${id==page?"page":"false"}" onclick="showPage('${id}')">${label}</button>`).join(""):"";
+ $("#main").innerHTML=V[page]();
+ if(page=="billing")drawCart();
+ if(page=="dash")drawCharts();
+ if(T[page])renderList(page)
+}
+async function startApp(){
+ await load();
+ if(db.ui&&db.ui.listState)Object.assign(listState,db.ui.listState);
+ if(db.ui&&db.ui.pageByGroup)pageByGroup={...db.ui.pageByGroup};
+ if(db.ui&&PAGE_GROUP[db.ui.currentTab]){page=db.ui.currentTab;cur=db.ui.currentGroup==PAGE_GROUP[page]?db.ui.currentGroup:PAGE_GROUP[page];pageByGroup[cur]=page}
+ else if(db.ui&&NAV.some(n=>n.id==db.ui.currentGroup)){cur=db.ui.currentGroup;page=pageByGroup[cur]||NAV.find(n=>n.id==cur).pages[0][0]}
+ render()
+}
+addEventListener("pagehide",()=>{if(!db)return;try{const snapshot=JSON.stringify(db);if(storageDb){const tx=storageDb.transaction("app","readwrite");tx.objectStore("app").put({savedAt:Date.now(),data:snapshot},KEY)}else localStorage.setItem(KEY,snapshot)}catch(e){storageStatus("Save failed — export a backup",true);console.error("Final local save failed",e)}});
+startApp();
+let installPrompt=null;
+const installAppBtn=document.getElementById("installAppBtn");
+addEventListener("beforeinstallprompt",event=>{event.preventDefault();installPrompt=event;installAppBtn.hidden=false});
+installAppBtn.addEventListener("click",async()=>{if(!installPrompt)return;try{await installPrompt.prompt()}catch(error){console.error("App installation prompt failed",error)}finally{installPrompt=null;installAppBtn.hidden=true}});
+addEventListener("appinstalled",()=>{installPrompt=null;installAppBtn.hidden=true});
+if(window.isSecureContext&&"serviceWorker" in navigator)navigator.serviceWorker.register("./service-worker.js").catch(error=>console.error("Service worker registration failed",error));
+</script></body></html>
