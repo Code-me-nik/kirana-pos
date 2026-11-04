@@ -26,7 +26,7 @@ Kirana POS runs in your web browser and can be installed on a computer or phone 
 
 If the repository owner has enabled GitHub Pages, open the live app link they shared. You can then install it by following the instructions below.
 
-> **Can't find a live link?** Ask the repository owner to publish the app using the steps in [Publish your own copy](#publish-your-own-copy-on-github-pages).
+> **Can't find a live link?** Ask the repository owner to publish the app using the steps in [Publish your own copy](#https://code-me-nik.github.io/kirana-pos/).
 
 ### Option 2: Run it on your computer
 
